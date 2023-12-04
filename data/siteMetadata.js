@@ -7,7 +7,7 @@ const siteMetadata = {
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://digital_space_blog.com',
-  siteRepo: '',
+  siteRepo: 'https://github.com/InhwanCho/nextjs_blog_v2',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/twitter-card.png',
   mastodon: 'https://mastodon.social/@mastodonuser',
