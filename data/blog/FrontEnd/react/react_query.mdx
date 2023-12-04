@@ -1,0 +1,51 @@
+---
+title: 'ReactQuery'
+
+tags:
+  - react
+  - reactQuery
+
+date: 2023-11-23
+---
+
+## React Query
+
+- ajax 요청 `성공/실패/로딩중` 상태를 `계속해서` 파악할 수 있습니다. 
+- `요청 실패 시` 약 3~4회 재시도
+- state 공유하지 않아도 됨.
+- ajax결과 5분 간 기록이 남음(캐싱)
+- 실시간으로 데이터가 필요하면 사용.
+
+`npm install @tanstack/react-query`로 설치
+
+```javascript
+//index.js
+// import -> QueryClient() 불러오기
+// <QueryClientProvider client={queryClient}>태그로 감싸기
+import { QueryClient, QueryClientProvider } from "react-query"
+const queryClient = new QueryClient()
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </QueryClientProvider>
+);
+```
+
+```javascript
+app.js
+const res = useQuery('',()=> {
+  return axios.get('https://ddddddddd').then(
+    (data)=>{
+      return data.data
+    }
+  ),
+})
+
+// res.data      => data 정보
+// res.isLoading => loding일때 true
+// res.error     => error일때 true
+```

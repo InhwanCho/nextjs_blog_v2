@@ -1,0 +1,62 @@
+---
+title: 'Login'
+
+tags:
+  - login
+
+date: 2023-11-26
+---
+
+## login 방법
+
+1. Session 방법
+
+Session id만으로 로그인을 확인하는 방법.
+유저 로그인 -> db에 아이디, 로그인날짜, 유효기간, session id들을 저장 ->
+유저에게 session id만 줌(저장).
+`passport` 라이브러리를 사용하면 구현이 쉬움.
+
+>1. 가입  
+2. 로그인  
+3. 로그인 완료 시 세션을 만듬  
+4. 유저에게 입장권을 보내줌  
+
+장점 - 유저의 http 요청마다 로그인 상태를 확인하여 보안이 좋음
+단점 - db에 부담이 많이감(고비용)
+
+
+2. Token 방식(jwt)
+
+Toekn 방법 중 하나인 jwt(JSON Web Toekn) 방식은 
+유저 로그인 -> 입장권 방급(id, 로그인 날짜, 유효기간) ->
+db에 저장하지 않고, 이 jwt토큰을 사용해 http 요청마다 token을 확인.
+
+장점 - 암호화하여 보안이 생각보다 좋고, 많은 사용자가 있을때 좋음.
+단점 - token 방식은 입장을 제한하기가 힘듬
+
+3. OAuth
+
+해당 사이트의 사용 권한을 타사이트에 대여해주는 겁니다.
+예 - 구글 및 페이스북으로 회원가입 및 로그인하는 방법.
+
+## Middleware
+
+로그인 확인 기능이 각 요청 마다 필요하면 요청 함수에 각각 넣는거는 비효율적입니다.
+그래서 함수를 만들고, 아래와 같은 식으로 요청을 할 수 있습니다.
+
+```javascript
+
+function name(request, response, next()) {
+  if (request.user){
+    //...
+  }
+  next() // 미들웨어 코드 실행이 끝난 뒤 실행되는 함수
+}
+
+// 이렇게 요청과 응답 사이에 name()이 실행되는 코드를
+// middleware라고 함
+app.get('/', [name(), ...], (request,response)=>{  })
+
+app.use(name()) // 밑에 있는 모든 API가 name() 미들웨어에 등록(파일 위에 선언하는게 중요)
+app.use('/url',name()) // /url 밑 하위 /url에만 등록
+```

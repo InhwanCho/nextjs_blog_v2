@@ -1,0 +1,44 @@
+---
+title:  'torch를 boolean값으로 변경'
+
+tags:
+- deeplearning
+- pytorch
+- torch
+
+date: 2023-01-08
+lastmod: 2023-01-08
+ 
+---
+
+## operation 참조
+
+- 예시를 통해 알아보겠습니다.
+
+```python
+import torch
+
+x=torch.tensor([1,2,3,4])
+
+print(x>2)
+# tensor([False, False,  True,  True])
+
+
+print((x>2).type(torch.float32))
+# tensor([0., 0., 1., 1.])
+```
+
+## gt() 함수를 활용
+
+```python
+import torch
+
+x=torch.tensor([1,2,3,4])
+
+print(x.gt(2))
+# tensor([False, False,  True,  True])
+
+
+print(x.gt(2).to(torch.int32))
+# tensor([0, 0, 1, 1], dtype=torch.int32)
+```

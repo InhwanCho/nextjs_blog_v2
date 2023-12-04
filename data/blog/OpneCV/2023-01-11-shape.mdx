@@ -1,0 +1,160 @@
+---
+title:  'OpenCV shape 변환'
+
+
+tags:
+  - opencv
+  - cv2
+  - shape
+  - reshape
+  - resize
+  - 변환
+
+date: 2023-01-11
+lastmod: 2023-01-11
+ 
+---
+
+## OpenCV와 PIL의 이미지 형태
+
+- 결과를 보시면 알겠지만 width, height이 반대입니다.
+
+```python
+import cv2
+from PIL import Image
+
+
+img = cv2.imread('Resources/cards.jpg')
+h, w, c = img.shape #가로 세로 채널(색)
+print(img.shape)
+
+#(500, 477, 3)
+
+pil_img = Image.open('Resources/cards.jpg')
+w, h = pil_img #세로 가로
+print(a.size)
+#(477, 500)
+```
+
+### openCV 사진 좌표 형태
+
+- openCV에서 좌표는 아래 사진처럼 표현 됩니다.
+- `x축`은 오른쪽으로 가지만 `y축`은 아래로 가는게 중요합니다.
+
+![cv2에서의 좌표](https://user-images.githubusercontent.com/111936229/211719711-ece15f56-7602-42cb-81ce-890fb441a9dd.png)
+
+### Resize
+
+```python
+import cv2
+
+img = cv2.imread('lena.png')
+
+print(img.shape)
+#(512,512,3)
+
+imgResize = cv2.resize(img,(200,150))
+print(imgResize.shape)
+#(200,150,3)
+
+
+cv2.imshow('origin',img)
+cv2.imshow('resize',imgResize)
+
+cv2.waitKey(0)
+```
+
+<img width="713" alt="리사이즈와 원본" src="https://user-images.githubusercontent.com/111936229/211721385-670192b3-699c-44a8-9319-6ce9f7b45235.png"/>
+
+### Crop
+
+```python
+import cv2
+
+
+img = cv2.imread('lena.png')
+
+print(img.shape)
+#(512,512,3)
+h, w, c = img.shape
+
+
+imgResize = cv2.resize(img,(500,400))
+print(imgResize.shape)
+#(500,400,3)
+
+
+
+# cv에서 crop은 [width(세로), height(가로), 색상 채널]입니다
+imgCropped = img[0:200,200:400]
+
+cv2.imshow('resize',imgResize)
+cv2.imshow('cropped',imgCropped)
+
+cv2.waitKey(0)
+```
+
+<img width="499" alt="Cropped img & original img" src="https://user-images.githubusercontent.com/111936229/211722258-0aebaa91-908e-4298-8f68-6447d7de3fb3.png"/>
+
+### Drawing
+
+- 영역 만들기
+
+```python
+import cv2
+
+#0값은 black으로 표현됨
+img = np.zeros((512,512,3), np.uint8)
+
+# 파란색 영역을 그림
+img[200:300, 100:500] = 255,0,0 #BGR(Blue, Green, Red)
+
+
+cv2.imshow('image1', img)
+
+cv2.waitKey(0)
+```
+
+<img width="505" alt="black(zeros) & blue img" src="https://user-images.githubusercontent.com/111936229/211735317-36f4c027-a54c-4f91-b8ff-fed892b5c02f.png"/>
+
+- line, rectangle 그리기
+
+```python
+img = np.zeros((512,512,3), np.uint8)
+
+#start_point, end_point, color, thickness
+cv2.line(img,(0,0),(300,300),color=(0,0,255),thickness=3)
+
+cv2.imshow('image1', img)
+cv2.waitKey(0)
+```
+
+<img width="507" alt="red line" src="https://user-images.githubusercontent.com/111936229/211735334-1b952961-a3c4-4c06-b300-54d5a928ccc8.png"/>
+
+```python
+cv2.rectangle(img,(50,50),(500,200),(0,255,0),3)
+
+cv2.imshow('image1', img)
+cv2.waitKey(0)
+```
+
+<img width="510" alt="green rectangle" src="https://user-images.githubusercontent.com/111936229/211736029-28c5615a-7ab3-4792-af15-58b181df1c3f.png"/>
+
+```python
+cv2.circle(img,(200,200), 30, (255,20,50),thickness=3)
+
+cv2.imshow('image1', img)
+cv2.waitKey(0)
+```
+
+<img width="502" alt="blue circle" src="https://user-images.githubusercontent.com/111936229/211737151-6eaf5118-be4a-48f8-ab7d-732ce897bcfd.png"/>
+
+```python
+cv2.putText(img, 'THIS IS Text', (50,300),fontFace=cv2.FONT_HERSHEY_COMPLEX,fontScale=1,
+color=(255,0,0),thickness=5)
+
+cv2.imshow('image1', img)
+cv2.waitKey(0)
+```
+
+<img width="508" alt="blue text" src="https://user-images.githubusercontent.com/111936229/211737145-9de7a045-0394-4cb8-8c1a-5528e46c8916.png"/>

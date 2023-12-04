@@ -1,0 +1,23 @@
+---
+title: 'Javascript'
+
+tags:
+  - javascript
+  - js
+
+date: 2023-11-23
+---
+
+## Javascript 유용한 문법 정리
+
+```Javascript
+
+// id는 nested routing에 사용된 맨 뒤의 주소값
+const { id } = useParams();
+// 여기서 state는 Array(Object) type의 데이터
+// object의 key값 중 id값이 주소의 id값과 동일한 object data만 찾을때
+// 'find'나 'filter'를 사용해서 아래와 같이 정보를 찾을 수 있다.
+const 찾는정보 = state.find(function (x) {
+  return x.id == id;
+});
+```

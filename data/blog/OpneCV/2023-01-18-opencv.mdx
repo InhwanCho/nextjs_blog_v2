@@ -1,0 +1,86 @@
+---
+title: OpenCV 여러장의 이미지를 한장으로 출력하는 방법
+
+tags:
+  - opencv
+  - cv2
+  - stack
+date: 2023-01-18
+
+---
+
+
+## OpenCV에서 여러 장의 이미지 한 윈도우로 출력하기
+
+- 기본적으로 np.hstack, np,vstack 을 이용해 이미지를 복붙하는 원리입니다.
+- 예시 코드를 보겠습니다.
+
+```python
+import cv2
+import numpy as np
+
+imglena = cv2.imread('Resources/lena.png')
+print(imglena.shape)
+# (512, 512, 3)
+
+imgHor = np.hstack((imglena,imglena))
+print(imgHor.shape)
+# (512, 1024, 3) 이미지 numpy를 더 붙인 형태입니다.
+
+cv2.imshow('hori', imgHor)
+cv2.waitKey(0)
+```
+
+<img width="1016" alt="가로로 사진 확장해서 붙이기" src="https://user-images.githubusercontent.com/111936229/213087314-4f90ce0c-ca59-4f54-8820-6ad3ea01dee8.png"/>
+
+```python
+import cv2
+import numpy as np
+
+def stackImages(scale,imgArray):
+    rows = len(imgArray)
+    cols = len(imgArray[0])
+    rowsAvailable = isinstance(imgArray[0], list)
+    width = imgArray[0][0].shape[1]
+    height = imgArray[0][0].shape[0]
+    if rowsAvailable:
+        for x in range ( 0, rows):
+            for y in range(0, cols):
+                if imgArray[x][y].shape[:2] == imgArray[0][0].shape [:2]:
+                    imgArray[x][y] = cv2.resize(imgArray[x][y], (0, 0), None, scale, scale)
+                else:
+                    imgArray[x][y] = cv2.resize(imgArray[x][y], (imgArray[0][0].shape[1], imgArray[0][0].shape[0]), None, scale, scale)
+                if len(imgArray[x][y].shape) == 2: imgArray[x][y]= cv2.cvtColor( imgArray[x][y], cv2.COLOR_GRAY2BGR)
+        imageBlank = np.zeros((height, width, 3), np.uint8)
+        hor = [imageBlank]*rows
+        hor_con = [imageBlank]*rows
+        for x in range(0, rows):
+            hor[x] = np.hstack(imgArray[x])
+        ver = np.vstack(hor)
+    else:
+        for x in range(0, rows):
+            if imgArray[x].shape[:2] == imgArray[0].shape[:2]:
+                imgArray[x] = cv2.resize(imgArray[x], (0, 0), None, scale, scale)
+            else:
+                imgArray[x] = cv2.resize(imgArray[x], (imgArray[0].shape[1], imgArray[0].shape[0]), None,scale, scale)
+            if len(imgArray[x].shape) == 2: imgArray[x] = cv2.cvtColor(imgArray[x], cv2.COLOR_GRAY2BGR)
+        hor= np.hstack(imgArray)
+        ver = hor
+    return ver
+
+img = cv2.imread(Resources/shapes.png)
+imgGray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+imglena = cv2.imread('Resources/lena.png')
+
+stackimg = stackImages(0.5,[[img,imgGray],
+                            [imglena,imglena]])
+
+
+cv2.imshow('img', stackimg)
+
+cv2.waitKey(0)
+```
+
+- 결과
+
+<img width="570" alt="여러 이미지 한번에 같이 출력" src="https://user-images.githubusercontent.com/111936229/213086778-8c55e1cf-bbf2-47e1-8f30-0a8cfde458f6.png"/>

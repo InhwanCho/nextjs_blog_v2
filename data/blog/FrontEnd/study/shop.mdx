@@ -1,0 +1,31 @@
+---
+title: '임시 제목'
+
+tags:
+  - study
+
+date: 2023-11-25
+---
+
+## aria-hidden 옵션
+
+html 태그의 옵션 중 `aria-hidden='true'` 옵션은
+스크린 리더 등(이는 보조 기술 중 하나로, 시각장애인을 위한 앱. 화면을 읽어주는 기능)에서
+읽어지지 않게 함으로써 도움을 줌.
+단, 시각적으로는 잘 보이기에 일반 유저에게는 변함이 없음.
+
+또한, 이렇게 시각적인 요소를 검색되지 않게하여 SEO(Search Engine Optimization)에 도움을 줍니다.
+
+## className에 'group' 또는 'peer'
+
+tailwind의 className옵션에 `group` 또는 `peer`를 넣어서 사용할 수 있습니다.
+아래와 같이 `group-hover` 또는 `peer-hover:`로 속성 묶어서 스타일링 할 때 사용됩니다.
+또한, `odd(홀수)`,`even(짝수)`옵션을 `group`으로 묶어서 사용 할 수 있습니다.
+
+```javascript
+<button className="group">
+  <div className="group-hover:bg-black">Child 1</div>
+  <div className="group-hover:font-bold">Child 2</div>
+</button>
+```
+

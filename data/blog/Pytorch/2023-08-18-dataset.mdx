@@ -1,0 +1,140 @@
+---
+title:  '파이토치에서 dataset 만들기'
+
+tags:
+- deeplearning
+- pytorch
+- torch
+
+date: 2023-08-18
+lastmod: 2023-08-18
+ 
+---
+
+
+
+
+## Dataset 만들기
+
+  1. Dataset을 Preprosessing 작업하기
+  2. Dataloader에 넣고 배치(batch) 단위로 만들기
+  3. 필요 시 collate_funtion으로 작업하기
+  [미니 배치를 생성하기 위해 샘플 리스트를 병합하는 역할 등]
+
+### collate_fn을 Dataset class가 아닌 function을 사용하는 이유
+
+- Class에서 구현은 가능함.
+- 그러나 디버깅 단계에서 index값이 아닌 `str`으로 확인하는게 편하하기 때문입니다.
+  [== token index나 label index를 `str`로 변환해서 확인하는게 불편합니다.]
+
+### KLUE-benchmark의 dataset-NER 예시입니다.
+
+```python
+#허깅페이스의 load_data 전처리
+def load_data(file_path: str, tokenizer: PreTrainedTokenizer = None):
+    klue_data = Path(file_path)
+    klue_text = klue_data.read_text().strip()
+    documents = klue_text.split("\n\n")
+
+    data_list = []
+    for doc in documents:
+        char_labels = []
+        token_labels = []
+        chars = []
+        sentence = ""
+        for line in doc.split("\n"):
+            if line.startswith("##"):
+                continue
+            token, tag = line.split("\t")
+            sentence += token
+            char_labels.append(tag)
+            chars.append(token)
+
+        offset_mappings = tokenizer(sentence, return_offsets_mapping=True)["offset_mapping"]
+        for offset in offset_mappings:
+            start, end = offset
+            if start == end == 0:
+                continue
+            token_labels.append(char_labels[start])
+
+        instance = {
+            "sentence": sentence,
+            "token_label": token_labels,
+            "char_label": char_labels,
+            "offset_mapping": offset_mappings
+        }
+        data_list.append(instance)
+
+    return data_list
+
+labels = [
+    "B-PS",
+    "I-PS",
+    "B-LC",
+    "I-LC",
+    "B-OG",
+    "I-OG",
+    "B-DT",
+    "I-DT",
+    "B-TI",
+    "I-TI",
+    "B-QT",
+    "I-QT",
+    "O",
+]
+
+label2id = {label: i for i, label in enumerate(labels)}
+id2label = {i: label for label, i in label2id.items()}
+
+# Dataset
+class NerDataset(Dataset):
+    def __init__(
+        self,
+        tokenizer: PreTrainedTokenizer,
+        examples: List,
+        shuffle: bool = False,
+        **kwargs
+    ):
+        self.dataset = examples
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __getitem__(self, index):
+        instance = self.dataset[index]
+
+        return instance
+
+tokenizer = AutoTokenizer.from_pretrained("klue/bert-base")
+examples = load_data(file_path, tokenizer)
+
+print(examples[0])
+#{'sentence': '경찰은 또 ..... 
+
+# dataset
+dataset = NerDataset(
+    tokenizer=tokenizer,
+    examples=examples,
+    max_length=max_length
+)
+
+# dataloader, collate_fn
+data_loader = DataLoader(
+    dataset=dataset,
+    collate_fn=collate_fn
+)
+
+# 이렇게하면 data_loader가 완성되어 전처리가 다 끝납니다.
+# 이 데이터를 확인하기 위해서는 아래 코드 실행(1배치만 확인)
+
+for batch in data_loader:
+  print(batch)
+  break
+
+```
+
+### 참고 자료
+
+[KLUE benchmark ner file](https://klue-benchmark.com/tasks "KLUE ner file")  

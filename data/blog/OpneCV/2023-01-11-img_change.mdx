@@ -1,0 +1,76 @@
+---
+title:  'OpenCV 이미지 변환'
+
+
+tags:
+- opencv
+- cv2
+
+date: 2023-01-11
+lastmod: 2023-01-11
+ 
+
+---
+
+## Grayscale, GaussianBlur
+
+```python
+import cv2
+
+img = cv2.imread('cat_img.jpg')
+# 컬러 -> 흑백으로 변환
+imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# ksize == kernel size이므로 홀수만 사용 가능, sigmaX는 블러 정도라고 생각하면 편하며,
+# 보통 -3~3사이의 값을 사용
+imgBlur = cv2.GaussianBlur(imgGray, ksize=(7,7),sigmaX=3)
+
+cv2.imshow('output',imgGray)
+cv2.imshow('output2',imgBlur)
+
+cv2.waitKey(0)
+```
+
+- 결과 imgGray
+  
+<img width="1020" alt="그레이 이미지" src="https://user-images.githubusercontent.com/111936229/211717325-d4d896f0-630b-4450-8977-a492fa691bd5.png"/>
+
+- 결과 imgBlur
+
+<img width="1014" alt="blur 이미지" src="https://user-images.githubusercontent.com/111936229/211717481-1721d754-f9f4-4ef3-bf6d-ea4e4b041f3a.png"/>
+
+
+## Canny, Dialation
+
+```python
+import cv2
+
+img = cv2.imread('cat_img.jpg')
+
+imgCanny = cv2.Canny(img,100,100)
+
+kernel = np.ones((5,5), np.uint8)
+# iterations에 높은 수를 넣으면 윤곽선이 더 커집니다.
+imgDialation = cv2.dilate(imgCanny, kernel=kernel,iterations=1)
+
+imgEroded = cv2.erode(imgDialation, kernel=kernel, iterations=1)
+
+cv2.imshow('output3',imgCanny)
+cv2.imshow('output4',imgDialation)
+cv2.imshow('output5',imgEroded)
+
+cv2.waitKey(0)
+```
+
+- 결과 imgCanny
+
+<img width="1019" alt="Canny" src="https://user-images.githubusercontent.com/111936229/211718228-2469f803-60dd-4930-bf20-7c1111fa6378.png"/>
+
+- 결과 imgDialation
+
+<img width="1021" alt="Dialation" src="https://user-images.githubusercontent.com/111936229/211718825-08992f1e-f210-491f-8b42-14c337b9c85c.png"/>
+
+- 결과 imgEroded
+
+<img width="1023" alt="Eroede img" src="https://user-images.githubusercontent.com/111936229/211719388-c8fa40b9-a489-44b0-810d-bb201e9ed1fb.png"/>
+

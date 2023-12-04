@@ -1,0 +1,89 @@
+---
+title: OpenCV 얼굴, 눈 등 특정 객체 검출
+
+tags:
+  - opencv
+  - cv2
+  - object
+  - detection
+  - 객체
+  - harrcascade
+date: 2023-01-18
+
+---
+
+## 정면 얼굴 검출
+
+1. `haarcascade file` 사용
+
+- `haarcascade_frontalface_default.xml` 을 사용하여 검출하는 방법입니다.
+- 이 파일은 다른 사람들이 이미 얼굴을 검출하는 학습을 해둔 파일이며 이를 이용하면 편하게 얼굴을 인식할 수 있습니다.
+- \<[opencv-data-haarcascades](https://github.com/opencv/opencv/tree/master/data/haarcascades)\>
+
+```python
+import cv2
+
+faceCascade = cv2.CascadeClassifier('Resources/haarcascade_frontalface_default.xml')
+img = cv2.imread('Resources/lena.png')
+imgGray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+faces = faceCascade.detectMultiScale(imgGray,1.1,4)
+
+for (x,y,w,h) in faces:
+    cv2.rectangle(img, (x,y), (x+w, y+h), (255,0,0), 2)
+
+cv2.imshow('result',img)
+cv2.waitKey(0)
+```
+
+<img width="505" alt="얼굴 인식" src="https://user-images.githubusercontent.com/111936229/213099837-c577eb63-1dab-433f-8e14-d48ca4309471.png"/>
+
+2. `opencv_face_detector.pbtxt` 파일 사용
+
+- haarcascade와 방법은 유사합니다
+
+```python
+import cv2
+
+def faceBox(faceNet, frame):
+    
+    frameWidth = frame.shape[1]
+    frameHeight = frame.shape[0]
+    blob = cv2.dnn.blobFromImage(frame, 1.0, (227,227), [104,117,123], swapRB=False)
+    faceNet.setInput(blob)
+    detection = faceNet.forward()
+    bboxs = []
+    for i in range(detection.shape[2]):
+        confidence = detection[0,0,i,2]
+        if confidence > 0.7 :
+            x1 = int(detection[0,0,i,3] * frameWidth)
+            y1 = int(detection[0,0,i,4] * frameHeight) 
+            x2 = int(detection[0,0,i,5] * frameWidth)
+            y2 = int(detection[0,0,i,6] * frameHeight)
+            bboxs.append([x1,y1,x2,y2])
+            cv2.rectangle(frame, (x1,y1), (x2,y2), (0,255,0),1)
+
+    return frame, bboxs
+
+faceProto = "opencv_face_detector.pbtxt"
+faceModel = "opencv_face_detector_uint8.pb"
+
+
+faceNet = cv2.dnn.readNet(faceModel, faceProto)
+video = cv2.VideoCapture(0)
+
+padding = 20
+
+while True:
+    ret, frame = video.read()
+    frame, bboxs = faceBox(faceNet, frame)
+    
+    detect = faceBox(faceNet, frame)
+    cv2.imshow('age_gender',frame)
+    k = cv2.waitKey(1)
+    if k == ord('q'):
+        break
+
+video.release()
+cv2.destroyAllWindows()
+```

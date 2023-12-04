@@ -1,0 +1,68 @@
+---
+title:  'OpenCV 기초'
+
+tags:
+- opencv
+- cv2
+
+date: 2023-01-11
+lastmod: 2023-01-11
+ 
+---
+
+
+## OpenCV 이미지 확인
+
+```python
+import cv2
+
+# imread로 이미지 읽어오기
+img = cv2.imread('cat_img.jpg')
+
+
+# imshow('이미지 표시 이름',이미지파일)입력
+cv2.imshow('output',img)
+waitKey(0) #(0을 넣으면 == 계속 딜레이 - 대기하라는 의미)
+```
+
+- imshow의 앞 'output'이름으로 img 파일이 출력됩니다.
+- 사진, 영상을 끄려면 키보드 `q`를 누르시면 됩니다.
+
+<img width="1026" alt="이미지 결과" src="https://user-images.githubusercontent.com/111936229/211715668-3db417b0-b1ff-4eaa-9173-73241c8cf7e5.png"/>
+
+
+## 내장 카메라(웹캠) 실행
+
+```python
+import cv2
+# 웹캠
+cap = cv2.VideoCapture(0) #노트북은 0번이 기본 내장 웹캠
+
+cap.set(3,640) #id_nubmer, width
+cap.set(4,480) #id_number, height
+cap.set(10,100) #id_number,bright
+
+# 웹캠은 프레임 단위로 계속 출력되기 때문에 일반적으로 while문으로 실행한다.
+# 키보드 'q'버튼을 누르면 실행이 종료됩니다.
+# success는 Ture,False이고, img는 프레임 단위의 이미지로 저장되는 형태이다.
+while True:
+    success, img = cap.read()
+    cv2.imshow('video_mp4', img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+```
+
+- 실행 결과
+
+<img width="705" alt="웹캠 결과" src="https://user-images.githubusercontent.com/111936229/212514462-86cdbf15-6286-4151-9a76-55a2e15c7cad.png"/>
+
+
+## 이미지 저장
+
+```python
+import cv2
+
+loaded_img = cv2.imread('cat_img.jpg')
+cv2.imwrite('folder/folder1/img.jpg',loaded_img)
+```
+

@@ -1,0 +1,25 @@
+---
+title:  '파이토치 이미지 증식 방법 차이'
+
+tags:
+- deeplearning
+- torch
+- pytorch
+
+date: 2022-12-15
+lastmod: 2022-12-15
+ 
+---
+
+
+## torchvision의 transforms와 albumentation의 차이점
+
+- 보통 torchvision의 transforms에서는 Normalize를 사용할 때
+- 데이터를 min_max scale(0~1)로 만들어주어야 하기 때문에 ToTensor를 먼저 사용한 후에 Normalize를 적용하는데 
+- albumentation의 Normalize는 scaling과 normalize를 동시에 처리한다는 차이점이 있다.
+
+- albumentations에서는 ToTensor 대신 ToTensorV2를 사용하는데 
+- ToTesorV2는 ToTensor와 마찬가지로 tensor형변환, channel dimension을 첫번째 차원으로 가져오는 역할은 하지만
+- min_max scaling은 하지 않는다.
+
+- (추가로 자료형 문제 때문에 albumentations에서 ToTensorV2를 Normalize 보다 앞에서 사용하면 에러가 발생한다.)

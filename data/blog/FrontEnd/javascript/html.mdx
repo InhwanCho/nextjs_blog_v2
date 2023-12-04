@@ -1,0 +1,29 @@
+---
+title: 'html'
+
+tags:
+  - html
+
+date: 2023-11-27
+---
+
+## form 태그
+
+```html
+<form action="/post" method="POST">
+  <h3>제목</h3>
+  <input value="<%=post.title%>" type="text" style="display: block" name="title" />
+  <input value="<%=post.content%>" type="text" style="display: block" name="content" />
+  <button type="submit">수정</button>
+</form>
+```
+
+form 태그의 action기능을 통해 method로 http 통신 방법을 선택 후 action의 url로 요청을 보낼 수 있습니다.
+
+input 태그의 
+value는 미리 작성되있는 value를 설정.(글 수정 시)
+placeholder는 미리 작성되있는 텍스트를 투명하게 설정.(예를 들어, 텍스트를 입력해주세요 같은 문구)
+type은 text, password 등을 설정.
+name은 해당 form 태그로 요청이 갈때 JSON의 key값.
+
+button 태그의 submit타입은 action이 작동되는 트리거 입니다.

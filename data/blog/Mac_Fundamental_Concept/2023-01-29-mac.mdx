@@ -1,0 +1,78 @@
+---
+title:  Mac에서 ls -al에서의 의미
+
+tags:
+- setting
+- mac
+
+date: 2023-01-29
+lastmod: 2023-01-29
+ 
+---
+
+```shell
+ls -la # 또는 ls -al
+
+
+# 648개의 파일(폴더 포함)이 있다는 의미
+total 648
+
+#현재 명령어를 실행한 폴더가 있다는 의미(무조건 나옴)
+drwxr-xr-x  18 inhwan  staff     576  1 24 12:18 .
+
+#현재 명령어를 실행한 폴더의 상위 폴더가 있다는 의미(무조건 나옴)
+drwxr-xr-x   4 inhwan  staff     128  1 23 21:23 ..
+
+
+-rw-r--r--@  1 inhwan  staff    6148  1 25 09:40 .DS_Store
+drwxr-xr-x   3 inhwan  staff      96  1 23 20:59 .ipynb_checkpoints
+-rw-r--r--   1 inhwan  staff    3321  1 23 19:26 README.md
+drwxr-xr-x   8 inhwan  staff     256  1 23 19:31 __pycache__
+```
+
+맨 앞의 `drwxr-xr-x`이런 문자열들은 권한을 의미
+그 다음의 `inhwan`은 파일(폴더 포함)의 소유자가 누군지
+그 뒤 `staff`는 소유자의 그룹이 어디인지를 의미
+그 다음의 `576` 등의 큰 숫자는 파일의 크기를 의미
+
+## 리다이렉션(Redirection)
+
+`>` 와 `<` 의 기호로 표현되며 입-출력 위치를 변경해줍니다.
+
+예를 들어 ls -la를 하면 기본적으로 터미널에 출력이 되지만, ls -la > test_file.txt 로 입력을 하면
+test_file.txt라는 파일이 생성되며 출력 결과가 test_file.txt에 생성됩니다.
+
+`>>`를 사용하게 된다면 ls -la >> test_file.txt의 경우
+기존의 test_file.txt 내용에 추가적으로 ls -la의 내용이 생성됩니다.(덮어씌우기가 아닌 추가)
+
+## 파이프(Pipe)
+
+`|` 기호로 표현되며 출력되는 위치를 다른 명령어로 넘어가게 해주는 표현
+
+예를 들어 ls -la를 입력하면 너무 많은 정보가 나오게 되는데
+특정 단어 `data`라는 게 들어있는 값만 찾으려 한다면 다음과 같이 사용하면 됩니다
+
+```zsh
+$ls -la | grep data
+
+# 출력 결과
+-rw-r--r--   1 inhwan  staff    2248  1 23 19:26 data_loaders.py
+drwxr-xr-x   8 inhwan  staff     256  1 23 19:31 dataset
+```
+
+
+## chmod
+
+`chmod`를 활용하여 권한을 수정 할 수 있습니다.
+
+`chmod -option 777 file_name`을 입력하면 file_name에 대해 모든 권한을 전부 준다는 의미입니다.
+
+```text
+1은 실행 권한, 2는 쓰기 권한, 4는 읽기 권한을 나타냅니다
+
+r: 읽기 권한, w: 쓰기 권한 x: 실행 권한 이라 부른다.
+
+chmode 777 file_name을 입력하면 user, group, other에게 모든 권한을 전부 준다는 의미
+따라서, user권한(1+2+4) group권한(1+2+4) other권한(1+2+4)
+1(읽기 가능) + 2(쓰기 가능) + 4(실행 가능) == 7
+```

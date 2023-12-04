@@ -1,0 +1,101 @@
+---
+title:  '데이터프레임 필터링 피봇테이블 - pd.pivot_table'
+
+
+tags:
+- pivot_table
+- pivot
+- pandas
+- python
+
+date: 2022-11-26
+lastmod: 2022-11-27
+ 
+---
+
+## pivot_table()
+
+- 아래와 같은 데이터 프레임이 있을 때, 'Age_category'를 엑셀 필터를 거는것 처럼 만들고 싶다면, 다양한 방법이 있지만 가장 보기 편한 것 중 하나가 피봇테이블이다.
+- 엑셀이나 스프레드시트의 피봇테이블과 유사하며 방법도 그리 어렵지 않다.
+- 아래는 간단한 예시입니다.
+
+```python
+#index는 맨 왼쪽에 gropby할 열이름을 입력,
+#columns는 보고 싶은 열의 이름을 입력,
+#fill_value는 연산하고 싶은 열의 이름을 입력(int,float타입만 가능) - 입력하지 않으면 default값으로 수치화할 수 있는 열들이 들어감.
+#aggfunc 에는 연산하고 싶은 방식 선택 ex) 'count', 'sum', 'mean', np.mean 등이 있다.
+import pandas as pd
+df = pd.DataFrame({'Age' : range(1,101,10),'Number' :range(100,1001,100)})
+df['Age_category'] = pd.qcut(df['Age'],3,labels=['young','medium','older']) 
+df
+	Age	Number	Age_category
+0	1	100	    young
+1	11	200	    young
+2	21	300	    young
+3	31	400 	    young
+4	41	500	    medium
+5	51	600	    medium
+6	61	700	    medium
+7	71	800	    older
+8	81	900	    older
+9	91	1000	    older
+
+import numpy as np
+df.pivot_table(index='Age',columns='Age_category',aggfunc='mean')
+
+
+Number
+Age_category	young   	medium	    older
+Age			
+1	            100.0	    NaN           NaN
+11	            200.0	    NaN           NaN
+21	            300.0	    NaN           NaN
+31	            400.0	    NaN           NaN
+41                NaN         500.0       NaN
+51	            NaN         600.0       NaN
+61	            NaN         700.0       NaN
+71                NaN       NaN           800.0
+81                NaN       NaN           900.0
+91                NaN       NaN           1000.0
+```
+
+## 아래는 판다스 메뉴얼의 예시입니다
+
+- 공식 메뉴얼을 보면, 확실히 이해 할 수 있을겁니다.
+
+```python
+df = pd.DataFrame({"A": ["foo", "foo", "foo", "foo", "foo",
+                         "bar", "bar", "bar", "bar"],
+                   "B": ["one", "one", "one", "two", "two",
+                         "one", "one", "two", "two"],
+                   "C": ["small", "large", "large", "small",
+                         "small", "large", "small", "small",
+                         "large"],
+                   "D": [1, 2, 2, 3, 3, 4, 5, 6, 7],
+                   "E": [2, 4, 5, 5, 6, 6, 8, 9, 9]})
+df
+	A	B	C	D	E
+0	foo	one	small	1	2
+1	foo	one	large	2	4
+2	foo	one	large	2	5
+3	foo	two	small	3	5
+4	foo	two	small	3	6
+5	bar	one	large	4	6
+6	bar	one	small	5	8
+7	bar	two	small	6	9
+8	bar	two	large	7	9
+
+#pivot_table
+pd.pivot_table(df, values=['D', 'E'], index=['A', 'C'],
+                    aggfunc={'D': np.mean,
+                             'E': [min, max, np.mean]})
+                             
+            D           E
+            mean        max	 mean	    min
+A     C				
+bar   large 5.500000	9   	7.500000	6
+small            5.500000	9   	8.500000	8
+foo	large   2.000000	5   	4.500000	4
+small           2.333333	6   	4.333333	2
+
+```

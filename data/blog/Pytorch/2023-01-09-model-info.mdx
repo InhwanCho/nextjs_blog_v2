@@ -1,0 +1,50 @@
+---
+title:  '파이토치에서 model 정보(summary) 확인'
+
+tags:
+- deeplearning
+- pytorch
+- model
+- summary
+- torch
+
+date: 2023-01-09
+lastmod: 2023-01-09
+ 
+---
+
+## 파이토치에서 만들어진 모델 정보 확인하기
+
+- keras에서는 `model.summary()`의 내장 함수를 이용하면 간단하게 모델 정보를 확인 가능합니다.
+- 파이토치에서도 여러 가지 방법을 통해 정보를 확인할 수 있습니다.
+
+### 1. `print`를 하면 summary가 출력된다
+   
+```python
+print(model)
+```
+
+<img width="943" alt="print 결과" src="https://user-images.githubusercontent.com/111936229/211247463-dffbfede-2625-4d50-b1f7-e48369abcc2f.png"/>
+
+
+### 2. `torchinfo` 통해 summary를 출력한다
+
+```python
+!pip install torchinfo
+from torchinfo import summary
+
+summary(model)
+```
+
+<img width="719" alt="torchinfo.summary 결과" src="https://user-images.githubusercontent.com/111936229/211247503-5e2ae136-14ec-4091-b65f-1cec173f4982.png"/>
+
+
+### 3. `torchsummary`를 통해 summary출력 (input_size를 알아야만 출력 가능)
+
+```python
+!pip install torchsummary
+from torchsummary import summary
+
+summary(model, input_size = (1,28,28), batch_size= 6)
+```
+
