@@ -7,6 +7,39 @@ tags:
 date: 2023-11-25
 ---
 
+## vitejs(react) + tailwind 설치 명령어
+
+vitejs + react + tailwindcss 설치
+
+```bash:bash
+npm create vite@latest my-project -- --template react
+cd my-project
+
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+```js:tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+```css:index.css
+/* 맨 위에 아래 tailwind를 입력 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
 ## aria-hidden 옵션
 
 html 태그의 옵션 중 `aria-hidden='true'` 옵션은
