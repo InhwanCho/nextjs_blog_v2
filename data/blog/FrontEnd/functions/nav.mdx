@@ -1,0 +1,61 @@
+---
+title: '스크롤 올리면 다시 보이는 Navbar'
+
+tags:
+  - navbar
+
+date: 2023-12-10
+---
+
+
+```js:Navbar.tsx
+import React, { useEffect, useState, useRef } from 'react';
+
+// Throttle function to limit the rate of function execution
+function throttleHelper(callback: () => void, waitTime: number): () => void {
+  let timerId: ReturnType<typeof setTimeout> | null = null;
+
+  return function () {
+    if (timerId === null) {
+      timerId = setTimeout(() => {
+        callback();
+        timerId = null;
+      }, waitTime);
+    }
+  };
+}
+
+// Navbar component with scroll hide/show behavior
+const Navbar: React.FC = () => {
+  const [hide, setHide] = useState(false);
+  const pageY = useRef<number>(0);
+
+  const handleScroll = () => {
+    const currentScrollPos = document.documentElement.scrollTop;
+    const deltaY = currentScrollPos - pageY.current;
+    const shouldHide = currentScrollPos !== 0 && deltaY >= 0;
+    setHide(shouldHide);
+    pageY.current = currentScrollPos; // Update the current scroll position
+  };
+
+  const throttleScroll = throttleHelper(handleScroll, 50);
+
+  useEffect(() => {
+    // Add scroll event listener
+    window.addEventListener('scroll', throttleScroll);
+    // Clean-up - Remove scroll event listener
+    return () => window.removeEventListener('scroll', throttleScroll);
+  }, [throttleScroll]); 
+
+  return (
+    <header
+      className={`sticky top-0 w-full bg-zinc-200 dark:bg-zinc-900 z-10 transition-transform duration-300 
+                  ${hide ? '-translate-y-full' : 'translate-y-0'}`}
+    >
+      Hello World
+    </header>
+  );
+};
+
+export default Navbar;
+```
