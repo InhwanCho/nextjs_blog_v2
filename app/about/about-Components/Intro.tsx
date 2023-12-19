@@ -51,17 +51,16 @@ export default function Intro() {
         </div>
       </div>
       <motion.h1
-        className="mb-10 mt-4 px-4 text-2xl font-medium leading-[1.5] dark:text-gray-200 sm:text-4xl"
+        className="mb-10 mt-4 w-full space-y-1 px-4 text-lg font-medium leading-[1.5] dark:text-gray-200 sm:text-xl"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <span className="font-bold">Hello, I&apos;m Inhwan.</span> I&apos;m a{' '}
-        <span className="font-bold">Hello, I&apos;m Inhwan.</span> I&apos;m a{' '}
-        <span className="italic">Hello, I&apos;m Inhwan.</span> I&apos;m a{' '}
-        <span className="underline">Hello, I&apos;m Inhwan.</span>
-        <button className="bg-gray-300" onClick={hrefLink}>
-          버튼
-        </button>
+        <span className="text-2xl font-bold">Hello, I&apos;m Inhwan.</span>
+        <p className="pt-2">👶 1992년 1월 29일 출생</p>
+        <p>👨‍🎓 단국대학교 에너지공학과 졸업</p>
+        <p>🏫 멀티캠퍼스 - 딥러닝 기반 AI 엔지니어링 수료</p>
+        <p>📭 wh_dlsghks@naver.com </p>
+        <p>📞 010-8380-8583</p>
       </motion.h1>
       <motion.div
         className="flex flex-col items-center justify-center gap-6 px-4 text-lg font-medium sm:flex-row"

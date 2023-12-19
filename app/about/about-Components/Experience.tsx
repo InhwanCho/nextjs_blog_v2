@@ -37,8 +37,8 @@ export default function Experience() {
                 fontSize: '1.5rem',
               }}
             >
-              <h3 className="font-semibold capitalize">{item.title}</h3>
-              <p className="!mt-0 font-normal">{item.location}</p>
+              <h3 className="mb-2 font-semibold capitalize">{item.title}</h3>
+              {/* <p className="!mt-0 font-normal">{item.location}</p> */}
               <p className="!mt-1 !font-normal text-gray-700 dark:text-white/75">
                 {item.description}
               </p>
