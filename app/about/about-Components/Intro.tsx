@@ -59,6 +59,9 @@ export default function Intro() {
         <span className="font-bold">Hello, I&apos;m Inhwan.</span> I&apos;m a{' '}
         <span className="italic">Hello, I&apos;m Inhwan.</span> I&apos;m a{' '}
         <span className="underline">Hello, I&apos;m Inhwan.</span>
+        <button className="bg-gray-300" onClick={hrefLink}>
+          버튼
+        </button>
       </motion.h1>
       <motion.div
         className="flex flex-col items-center justify-center gap-6 px-4 text-lg font-medium sm:flex-row"
@@ -99,4 +102,8 @@ export default function Intro() {
       </motion.div>
     </section>
   )
+}
+
+function hrefLink() {
+  location.href = '/static/visualProject.html'
 }
