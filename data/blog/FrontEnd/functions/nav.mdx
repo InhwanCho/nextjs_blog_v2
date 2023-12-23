@@ -7,11 +7,10 @@ tags:
 date: 2023-12-10
 ---
 
+```javascript:Navbar.tsx
+import React, { useState, useEffect } from 'react';
 
-```js:Navbar.tsx
-import React, { useEffect, useState, useRef } from 'react';
-
-// Throttle function to limit the rate of function execution
+// 스로틀(throttle) 대신 useEffect를 사용해도 됩니다.- 여기에선 효율을 위해 스로틀을 사용.
 function throttleHelper(callback: () => void, waitTime: number): () => void {
   let timerId: ReturnType<typeof setTimeout> | null = null;
 
@@ -25,32 +24,28 @@ function throttleHelper(callback: () => void, waitTime: number): () => void {
   };
 }
 
-// Navbar component with scroll hide/show behavior
-const Navbar: React.FC = () => {
-  const [hide, setHide] = useState(false);
-  const pageY = useRef<number>(0);
+const Navbar = () => {
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  const [searchBtn, setSearchBtn] = useState(false);
 
-  const handleScroll = () => {
-    const currentScrollPos = document.documentElement.scrollTop;
-    const deltaY = currentScrollPos - pageY.current;
-    const shouldHide = currentScrollPos !== 0 && deltaY >= 0;
-    setHide(shouldHide);
-    pageY.current = currentScrollPos; // Update the current scroll position
-  };
+  const handleScroll = throttleHelper(() => {
+    const currentScrollPos = window.scrollY;
+    const isScrollingUp = prevScrollPos > currentScrollPos;
 
-  const throttleScroll = throttleHelper(handleScroll, 50);
+    setIsVisible(isScrollingUp || currentScrollPos < 10);
+    setPrevScrollPos(currentScrollPos);
+  }, 100);
 
   useEffect(() => {
-    // Add scroll event listener
-    window.addEventListener('scroll', throttleScroll);
-    // Clean-up - Remove scroll event listener
-    return () => window.removeEventListener('scroll', throttleScroll);
-  }, [throttleScroll]); 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [prevScrollPos, isVisible, handleScroll]);
 
   return (
     <header
-      className={`sticky top-0 w-full bg-zinc-200 dark:bg-zinc-900 z-10 transition-transform duration-300 
-                  ${hide ? '-translate-y-full' : 'translate-y-0'}`}
+      className={`sticky top-0 w-full bg-zinc-200 dark:bg-zinc-900 z-10 transition-transform duration-300
+                  ${isVisible ? '-translate-y-full' : 'translate-y-0'}`}
     >
       Hello World
     </header>
@@ -59,3 +54,5 @@ const Navbar: React.FC = () => {
 
 export default Navbar;
 ```
+
+- 옵션을 `isVisible ? "top-0" : "top-[-65px]"`처럼 top을 주거나 또는 위의 예시처럼 translate-y 옵션으로 설정
