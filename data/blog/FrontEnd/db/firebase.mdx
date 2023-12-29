@@ -51,8 +51,7 @@ export const storage = getStorage(app);
 export const db = getFirestore(app);
 ```
 
-firebase db에는 다른 데이터 베이스처럼 collection과 document, field가 있습니다.
-
+firebase db에는 다른 데이터 베이스처럼 `collection`과 `document`, `field`가 있습니다.
 
 ### 데이터 추가하기
 
@@ -81,8 +80,9 @@ try {
 
 import { doc, setDoc } from "firebase/firestore"; 
 
-// 새로운 collection cities의 LA doc을 생성. doc이 없으면 생성되며, doc이 있으면 덮어씌웁니다.
-// 세번째 옵션으로 { merge: true }를 준 경우는 예외입니다.
+// 새로운 collection cities의 LA doc을 생성. doc이 없으면 생성되며, 
+// doc이 있으면 덮어씌웁니다 == 기존의 field가 전부 삭제되고 새로운 doc이 생성됨.
+// 세번째 옵션으로 { merge: true }를 준 경우는 update와 동일하게 병합이 됩니다.
 await setDoc(doc(db, "cities", "LA"), {
   name: "Los Angeles",
   state: "CA",
@@ -107,7 +107,6 @@ querySnapshot.forEach((doc) => {
 ### 데이터(문서) 업데이트
 
 ```js
-
 import { doc, updateDoc } from "firebase/firestore";
 
 const washingtonRef = doc(db, "cities", "DC");
