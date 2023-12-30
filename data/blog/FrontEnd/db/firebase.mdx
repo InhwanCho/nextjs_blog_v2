@@ -13,9 +13,11 @@ date: 2023-12-25
 
 firebase의 `Firestore`는 Firebase 및 Google Cloud의 모바일, 웹, 서버 개발에 사용되는 유연하고 확장 가능한 데이터베이스입니다
 
+참고로 firebase/lite는 firebase와 거의 유사한 40~60% 용량을 감소한 버전입니다. firebase에 비해 몇몇 기능이 없습니다.
+
 1. firebase에서 로그인 후 프로젝트 생성 
 
-2. 
+2. 설치하기
 ```
 npm install firebase
 ```
@@ -28,6 +30,8 @@ const firebaseConfig = { ... }
 const app = initializeApp(firebaseConfig);
 ...
 ```
+
+---
 
 ## FireStore(database)
 
@@ -53,7 +57,7 @@ export const db = getFirestore(app);
 
 firebase db에는 다른 데이터 베이스처럼 `collection`과 `document`, `field`가 있습니다.
 
-### 데이터 추가하기
+### 데이터(문서) 추가하기
 
 ```js
 // 위에서 생성한 db를 import해서 doc을 생성합니다.
