@@ -263,3 +263,19 @@ $git config --global user.password ghp_adfsfd붙어넣기sdfsdf
 <br/>
 
 [다운 깃](https://minhaskamal.github.io/DownGit/#/home '다운깃')
+
+---
+
+## github의 특정 version을 커밋하고 싶은 경우
+
+```bash
+$git clone https://github.com/aaaaa.git
+
+$cd aaaaa
+
+# 커밋 넘버 확인하기 - 선택
+# $git log  
+
+# 커밋 넘버 입력하여 버전 되돌리기 - 커밋 넘버를 전부 칠 필요는 없음.
+$git reset --hard 72d39edd 
+```
