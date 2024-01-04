@@ -15,11 +15,17 @@ date: 2023-11-13
 
 > ORM이란? DB데이터를 객체로 매핑해 주는 역할을 하는 것입니다. 
 
-> 즉, SQL문법을 사용하지 않고, 다른 언어(파이썬,자바스크립트 ...)를 사용하여 데이터베이스를 수정할 수 있도록 연결해주는 서비스입니다.
+> 즉, SQL문법을 사용하지 않고, 다른 언어(파이썬,자바스크립트 ...)를 사용하여 데이터베이스를 수정할 수 있도록 연결해주는(번역 역할) 서비스입니다.
 
 
 
 ## 사용 방법
+
+1. 설치
+2. 데이터베이스가 어떻게 생겼는지 schema를 작성하여 알려주기.
+3. schema를 기반으로 자동완성 사용 가능.
+4. prisma studio를 통해 관리 가능.
+
 
 ```bash
 # 설치
@@ -31,6 +37,7 @@ npx prisma init
 
 # 모델을 적용하기(db마다 다름)
 npx prisma init --datasource-provider sqlite
+
 # 만든 schema를 sql로 생성하기
 npx prisma migrate dev --name init
 ```
@@ -64,7 +71,7 @@ npx prisma migrate dev --name init
 # schema.prisma 설정하기 
  ```
 
-```schma.prisma
+```prisma:schma.prisma
 //  prisma/schma.prisma
 //생성자 - 어떤 클라이언트가 생성되어야 하는지에 대해 설명
 generator client {
@@ -77,8 +84,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//따로 모델 작성해야 합니다.
-//데이터 모델 - 모델을 설정.
+// 모델 작성해야 합니다.
+// 데이터 모델 - 모델을 설정.
 model User {
   // id,email,name,article을 가지고있는 object생성
   id Int @id @default(autoincrement())
@@ -168,3 +175,15 @@ main()
 ### 참고
 [유튜브 - prisma crash course](https://www.youtube.com/watch?v=CYH04BJzamo&ab_channel=TraversyMedia 'prisma tutorial')<br/>
 [Prisma Docs](https://www.prisma.io/docs 'prisma docs')<br/>
+
+```prisma:schema.prisma
+phone Int  == Int 타입으로 필수로 할당되어야함.
+phone Int? == phone 있다면 Int 타입으로 할당 되어야 하지만 값이 없을 수도 있음.
+@id        == 아이디(식별자 코드) 값 - 유니크함
+@unique    == 유니크한 값 - 식별자 코드는 아님(이메일 주소 같은 값)
+@default   == 설정을 안했을 때의 기본 값
+autoincrement() == 따로 설정을 하지 않으면 값이 증가해서 할당
+now()      == 생성되었을 때의 시간을 할당
+@relation  == 
+@updatedAt == 업데이트가 될때마다 변경.
+```
