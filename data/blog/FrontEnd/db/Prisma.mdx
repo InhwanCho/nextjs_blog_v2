@@ -71,8 +71,8 @@ npx prisma migrate dev --name init
 # schema.prisma 설정하기 
  ```
 
-```prisma:schma.prisma
-//  prisma/schma.prisma
+```prisma:schema.prisma
+//  prisma/schema.prisma
 //생성자 - 어떤 클라이언트가 생성되어야 하는지에 대해 설명
 generator client {
   provider = "prisma-client-js"
@@ -182,8 +182,9 @@ phone Int? == phone 있다면 Int 타입으로 할당 되어야 하지만 값이
 @id        == 아이디(식별자 코드) 값 - 유니크함
 @unique    == 유니크한 값 - 식별자 코드는 아님(이메일 주소 같은 값)
 @default   == 설정을 안했을 때의 기본 값
-autoincrement() == 따로 설정을 하지 않으면 값이 증가해서 할당
+autoincrement() == 따로 설정을 하지 않으면 값이 1씩 증가해서 할당
 now()      == 생성되었을 때의 시간을 할당
-@relation  == 
+@relation  == (fields)는 현재 모델에서 관계있는 값, (references)는 현재 모델과 관계있는 값
+              (onDelete)는 관계있는 데이터가 삭제됬을때 같이 삭제할것인지
 @updatedAt == 업데이트가 될때마다 변경.
 ```
