@@ -247,14 +247,20 @@ $git push origin --delete test_branch_name
 
 깃허브가서 토큰 발급 -> 저장
 
+- Mac 사용자면, key chain(키체인) -> 왼쪽의 `로그인` 클릭 -> `github` 검색 -> 전체 삭제
+
 ```shell
 #기존 등록된 로그인 정보 지우기
 $git config --system --unset credential.helper
 
 #다시 아이디, 비밀번호 등록
 $git config --global user.name InhwanCho
+$git config --global user.email asdf@naver.com
 $git config --global user.password ghp_adfsfd붙어넣기sdfsdf
 ```
+
+
+
 
 ## 깃허브의 특정 폴더 및 파일만 다운 받고 싶을때
 
