@@ -1,23 +1,19 @@
 ---
-title:  'Prisma'
+title: 'Prisma'
 
 tags:
   - prisma
-  
 
 date: 2023-11-13
- 
 ---
 
 ## Prisma
 
 > Prisma는 오픈소스 ORM(Object-relational mapping) 중 하나입니다.
 
-> ORM이란? DB데이터를 객체로 매핑해 주는 역할을 하는 것입니다. 
+> ORM이란? DB데이터를 객체로 매핑해 주는 역할을 하는 것입니다.
 
 > 즉, SQL문법을 사용하지 않고, 다른 언어(파이썬,자바스크립트 ...)를 사용하여 데이터베이스를 수정할 수 있도록 연결해주는(번역 역할) 서비스입니다.
-
-
 
 ## 사용 방법
 
@@ -25,7 +21,6 @@ date: 2023-11-13
 2. 데이터베이스가 어떻게 생겼는지 schema를 작성하여 알려주기.
 3. schema를 기반으로 자동완성 사용 가능.
 4. prisma studio를 통해 관리 가능.
-
 
 ```bash
 # 설치
@@ -47,7 +42,6 @@ npx prisma migrate dev --name init
 - prisma 폴더에 `schema.prisma`라고 생성되며 크게 3가지 설정을 해줘야한다.
 - VS code를 사용하고 있다면 `extension에서 prisma를 설치`하면 보기 편합니다.
 
-
 [데이터 소스](https://www.prisma.io/docs/concepts/components/prisma-schema/data-sources 'Data sources'): 연결될 데이터 소스에 대한 세부사항을 명시한다. <br/>
 [생성자](https://www.prisma.io/docs/concepts/components/prisma-schema/generators 'Generators'): 어떤 클라이언트가 생성되어야 하는지에 대해 설명한다. <br/>
 [데이터 모델](https://www.prisma.io/docs/concepts/components/prisma-schema/data-model 'Data Model'): 모델을 설정한다.<br/>
@@ -68,8 +62,8 @@ npx prisma migrate dev --name init
  npx prisma init --datasource-provider sqlite
  code .
 # VS코드에서 prisma/schema.prisma로 이동해서
-# schema.prisma 설정하기 
- ```
+# schema.prisma 설정하기
+```
 
 ```prisma:schema.prisma
 //  prisma/schema.prisma
@@ -90,7 +84,7 @@ model User {
   // id,email,name,article을 가지고있는 object생성
   id Int @id @default(autoincrement())
   email String @unique
-  name String? 
+  name String?
   // articles은 Article이라는 모델(생성 필요)
   articles Article[]
 }
@@ -100,7 +94,7 @@ model Article {
   title String
   body String?
   author User @relation(fields: [authorId], references: [id])
-  authorId Int 
+  authorId Int
 }
 ```
 
@@ -172,7 +166,23 @@ main()
 `npx prisma client`: Database를 변경하는 기능입니다.<br/>
 `npx prisma studio` : GUI로 Database를 편집할 수 있는 명령어입니다.<br/>
 
+### \@\@index 사용 예시
+
+
+```prisma:schma.prisma
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
+
+@@index([name, email], name: "name_aaa_index")
+}
+// name과 email에 대해 index를 정의함. index 이름은 name_aaa_index
+```
+
 ### 참고
+
 [유튜브 - prisma crash course](https://www.youtube.com/watch?v=CYH04BJzamo&ab_channel=TraversyMedia 'prisma tutorial')<br/>
 [Prisma Docs](https://www.prisma.io/docs 'prisma docs')<br/>
 
@@ -187,4 +197,5 @@ now()      == 생성되었을 때의 시간을 할당
 @relation  == (fields)는 현재 모델에서 관계있는 값, (references)는 현재 모델과 관계있는 값
               (onDelete)는 관계있는 데이터가 삭제됬을때 같이 삭제할것인지
 @updatedAt == 업데이트가 될때마다 변경.
+@@index    == 데이터베이스 인덱스를 정의할 때 사용
 ```

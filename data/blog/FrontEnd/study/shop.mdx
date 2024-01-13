@@ -1,64 +1,87 @@
 ---
-title: '임시 제목'
+title: 'SWR (state-while-revalidate)'
 
 tags:
-  - study
+  - swr
 
-date: 2023-11-25
+date: 2024-01-12
 ---
 
-## vitejs(react) + tailwind 설치 명령어
+## SWR
 
-vitejs + react + tailwindcss 설치
+reactQuery와 유사합니다
 
-```bash:bash
-npm create vite@latest my-project -- --template react
-cd my-project
+page에 접근 -> SWR(fetch data -> 캐싱) -> 다른 페이지(혹은 다른 화면) -> page 접근 ->
+SWR(API 호출 - 데이터가 바뀐게 있는지 확인 - loading이 없고 캐시에 있는 데이터 먼저 사용)
+-> 바뀐게 없으면 기존의 data(캐시에 있는) 사용 -> 바뀐게 있으면 data update
 
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
+즉, 기존의 fetch를 사용하면 `page에 접근 했을때 마다` undefined와 data를 받는데,
+SWR를 사용하면 data변경이 없으면 처음 `page에 접근 할 때만` data를 받게됩니다.
 
-```js:tailwind.config.js
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
+## 기존의 fetch 방법과 비교
+
+```js:기존방법.tsx
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+export default function Home() {
+  const [user, setUser] = useState();
+  const router = useRouter();
+  useEffect(() => {
+    fetch("/api/users/home")
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.ok) {
+          return router.replace("/login");
+        } else {
+          setUser(data.profile);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [router]);
+  return user;
 }
 ```
 
-```css:index.css
-/* 맨 위에 아래 tailwind를 입력 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+- 방법 1. SWRConfig를 사용하지 않고 하나씩 fetcher를 생성
+
+```js:SWR.tsx
+import useSWR from "swr";
+
+const fetcher = (url: string)=> fetch(url).then((response)=>response.json())
+
+export default function useUser() {
+  const { data, error } = useSWR('/api/users/home', fetcher)
+  const router = useRouter();
+  useEffect(()=>{
+    if(data && !data.ok){
+      router.replace('/login')
+    }
+  },[data, router])
+
+  return { user: data?.profile, isLoading: !data && !error };
 ```
 
-## aria-hidden 옵션
+- 방법 2. SWRConfig를 감싸기
 
-html 태그의 옵션 중 `aria-hidden='true'` 옵션은
-스크린 리더 등(이는 보조 기술 중 하나로, 시각장애인을 위한 앱. 화면을 읽어주는 기능)에서
-읽어지지 않게 함으로써 도움을 줌.
-단, 시각적으로는 잘 보이기에 일반 유저에게는 변함이 없음.
-
-또한, 이렇게 시각적인 요소를 검색되지 않게하여 SEO(Search Engine Optimization)에 도움을 줍니다.
-
-## className에 'group' 또는 'peer'
-
-tailwind의 className옵션에 `group` 또는 `peer`를 넣어서 사용할 수 있습니다.
-아래와 같이 `group-hover` 또는 `peer-hover:`로 속성 묶어서 스타일링 할 때 사용됩니다.
-또한, `odd(홀수)`,`even(짝수)`옵션을 `group`으로 묶어서 사용 할 수 있습니다.
-
-```javascript
-<button className="group">
-  <div className="group-hover:bg-black">Child 1</div>
-  <div className="group-hover:font-bold">Child 2</div>
-</button>
+```js:layout.tsx
+<SWRConfig value={{
+        fetcher: (url: string) =>
+          fetch(url).then((response) => response.json()),
+          refreshInterval:2000,
+      }}>
+  <Component/>
+</SWRConfig>
 ```
 
+```js:SWR.tsx
+import useSWR from "swr";
+
+export default function useUser() {
+  const { data, error } = useSWR('/api/users/home')
+  ...
+```
+
+super_cache
