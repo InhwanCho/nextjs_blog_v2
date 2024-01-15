@@ -45,7 +45,28 @@ export default function Home() {
 }
 ```
 
-- 방법 1. SWRConfig를 사용하지 않고 하나씩 fetcher를 생성
+- 방법 1. 상위 layout에 SWRConfig를 감싸기(추천)
+
+```js:layout.tsx
+<SWRConfig value={{
+  fetcher: (url: string) =>
+          fetch(url).then((response) => response.json()),
+          refreshInterval:2000,
+      }}>
+  <Component/>
+</SWRConfig>
+```
+
+```js:SWR.tsx
+import useSWR from "swr";
+
+export default function useUser() {
+  const { data, error } = useSWR('/api/users/home')
+  // ...
+}
+```
+
+- 방법 2. SWRConfig를 사용하지 않고 하나씩 fetcher를 생성
 
 ```js:SWR.tsx
 import useSWR from "swr";
@@ -63,25 +84,3 @@ export default function useUser() {
 
   return { user: data?.profile, isLoading: !data && !error };
 ```
-
-- 방법 2. SWRConfig를 감싸기
-
-```js:layout.tsx
-<SWRConfig value={{
-        fetcher: (url: string) =>
-          fetch(url).then((response) => response.json()),
-          refreshInterval:2000,
-      }}>
-  <Component/>
-</SWRConfig>
-```
-
-```js:SWR.tsx
-import useSWR from "swr";
-
-export default function useUser() {
-  const { data, error } = useSWR('/api/users/home')
-  ...
-```
-
-super_cache

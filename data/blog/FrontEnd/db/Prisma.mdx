@@ -28,12 +28,12 @@ npm install prisma
 
 # 시작
 npx prisma init
-# prisma schema 설정하기 - 아래 글 Prisma Schema 참조
 
+# prisma schema 설정하기 - 아래 글 Prisma Schema 참조
 # 모델을 적용하기(db마다 다름)
 npx prisma init --datasource-provider sqlite
 
-# 만든 schema를 sql로 생성하기
+# 만든 schema를 sqlite로 생성하기 - lite가 아닌 실제 db를 사용하는 경우 생략.
 npx prisma migrate dev --name init
 ```
 
