@@ -10,6 +10,7 @@ date: 2024-01-12
 ## SWR
 
 reactQuery와 유사합니다
+reactQuery는 기능이 더 많지만 용량도 크기 때문에, 간단한 용도로 사용할때는 SWR이 적합합니다.
 
 page에 접근 -> SWR(fetch data -> 캐싱) -> 다른 페이지(혹은 다른 화면) -> page 접근 ->
 SWR(API 호출 - 데이터가 바뀐게 있는지 확인 - loading이 없고 캐시에 있는 데이터 먼저 사용)
@@ -17,6 +18,8 @@ SWR(API 호출 - 데이터가 바뀐게 있는지 확인 - loading이 없고 캐
 
 즉, 기존의 fetch를 사용하면 `page에 접근 했을때 마다` undefined와 data를 받는데,
 SWR를 사용하면 data변경이 없으면 처음 `page에 접근 할 때만` data를 받게됩니다.
+
+그렇기 때문에 `reactQuery`나 `SWR`같은 캐싱을 이용한 방법을 사용해야합니다.
 
 ## 기존의 fetch 방법과 비교
 
@@ -45,6 +48,10 @@ export default function Home() {
 }
 ```
 
+- 단 fetch로 불러온 데이터는 캐싱이 되지 않음.
+
+## SWR 사용하기
+
 - 방법 1. 상위 layout에 SWRConfig를 감싸기(추천)
 
 ```js:layout.tsx
@@ -66,7 +73,7 @@ export default function useUser() {
 }
 ```
 
-- 방법 2. SWRConfig를 사용하지 않고 하나씩 fetcher를 생성
+- 방법 2. SWRConfig를 사용하지 않고 하나씩 fetcher를 생성(비추천)
 
 ```js:SWR.tsx
 import useSWR from "swr";
@@ -83,4 +90,13 @@ export default function useUser() {
   },[data, router])
 
   return { user: data?.profile, isLoading: !data && !error };
+}
 ```
+
+useSWR(key, fetcher)에 인자가 2개가 들어가는데,
+key에 url이 들어가는데 이 url이 캐싱이 될 때의 key(super_cache)값으로 들어갑니다.
+
+> 참고로 router.push()는 페이지를 이동(전페이지에 대한 뒤로가기 기록이 있음)
+> 그래서 뒤로가기를 누르면 전페이지 이동-> push()한 페이지로 이동됨
+> router.replace()는 페이지를 이동시키고 기록을 남기지 않음
+> 즉 (뒤로가기를 누르면 그 전페이지가 아닌 전전페이지로 이동하게 만듦)
