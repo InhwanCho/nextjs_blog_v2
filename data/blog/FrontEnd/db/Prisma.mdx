@@ -195,7 +195,63 @@ phone Int? == phone 있다면 Int 타입으로 할당 되어야 하지만 값이
 autoincrement() == 따로 설정을 하지 않으면 값이 1씩 증가해서 할당
 now()      == 생성되었을 때의 시간을 할당
 @relation  == (fields)는 현재 모델에서 관계있는 값, (references)는 현재 모델과 관계있는 값
-              (onDelete)는 관계있는 데이터가 삭제됬을때 같이 삭제할것인지
+              (onDelete)는 관계있는 데이터가 삭제됬을때 같이 삭제할것인지 여부.
+              만약, relation fields가 동일한 2개가 있는 경우 (name)을 입력해줘야합니다.
 @updatedAt == 업데이트가 될때마다 변경.
 @@index    == 데이터베이스 인덱스를 정의할 때 사용
+```
+
+- 동일한 모델의 값을 참조하는 경우
+
+```prisma:schema.prisma
+// 만약, relation fields가 동일한 2개가 있는 경우 name을 입력
+model User {
+  id         Int         @id @default(autoincrement())
+  phone      String?     @unique
+  reviewsBy  Review[]    @relation(name: "writtenReviews")
+  reviewsFor Review[]    @relation(name: "receivedReviews")
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  createdBy    User     @relation(name: "writtenReviews", fields: [createdById], references: [id], onDelete: Cascade)
+  createdFor   User     @relation(name: "receivedReviews", fields: [createdForId], references: [id], onDelete: Cascade)
+  review       String   @db.MediumText
+  createdById  Int
+  createdForId Int
+
+  @@index([createdById])
+  @@index([createdForId])
+}
+```
+
+- 동일한 값을 가진 모델을 생성하고 싶은 경우
+
+```prisma:schema.prisma
+// 또한, 동일한 모델을 생성하고 싶은 경우 'enum'을 사용하면 좋습니다.
+// 여기서는 'Purchase'와 'Sale'의 동일한 내용의 모델을 생성하는 겁니다.
+model User {
+  ...
+  records  Review[]
+}
+
+model Record {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    Int
+  createAt  DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  productId Int
+  kind      Kind
+
+  @@index([userId])
+  @@index([productId])
+}
+
+enum Kind {
+  Purchase
+  Sale
+}
+
 ```
