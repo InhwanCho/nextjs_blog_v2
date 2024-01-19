@@ -100,3 +100,57 @@ key에 url이 들어가는데 이 url이 캐싱이 될 때의 key(super_cache)�
 > 그래서 뒤로가기를 누르면 전페이지 이동-> push()한 페이지로 이동됨
 > router.replace()는 페이지를 이동시키고 기록을 남기지 않음
 > 즉 (뒤로가기를 누르면 그 전페이지가 아닌 전전페이지로 이동하게 만듦)
+
+## mutate
+
+먼저 useSWR로 data와 mutate를 받는데, 이 mutate는 data와 동일한 형태이며, mutate를 변경 시 data를 변경합니다.
+이를 이용하여 백엔드로 데이터를 넘기고 받아오기 전에 UI를 front에서 미리 바꿀 수 있게 많이 사용합니다.
+특히, 현재 보고 있는 페이지 내의 데이터를 변경하는것을 `unbound mutate`, 현재 보고있는 페이지 외의 데이터를 변경하는 것을 `bound mutate`라 합니다.
+
+1. unbound mutate
+
+```js:SWR.tsx
+import useSWR from "swr";
+
+export default function likeTest() {
+  const apiAddress = 'https://sadfsfadsf.com'
+  const { data, mutate } = useSWR(apiAddress);
+
+  // mutate를 이용하여 전체 기존의 데이터를 넣고, 바꾸고 싶은 데이터를 첫번째 인즈에 넣고,
+  // 두번째 인자에는 true는 재검증(refetch)하여 백엔드의 데이터와 일치하는지 확인.(default)
+  // false는 재검증을 하지 않아 바뀐 값 그대로 front 에서만 유지합니다.
+  const handleLike = () => {
+    if (!data) return; //여러번 클릭 시 1회만 실행
+    mutate({
+      ...data,
+      isLiked: !data.isLiked
+    }, false);
+  };
+
+  // mutate로 apiAddress를 다시 할 경우 재검증을 하게됩니다.
+  const handleRefetch = () => {
+    if (!data) return; //여러번 클릭 시 1회만 실행
+    mutate(apiAddress)
+  }
+  return (
+      <div className="grid grid-cols-2 gap-5 mx-6 my-2">
+        <div onClick={handleRefetch} className={`bg-white p-4 rounded-lg flex justify-center cursor-pointer`}>Let&apos;s refetch!</div>
+        <div onClick={handleLike} className={`${data.isLiked ? 'bg-red-300' : 'bg-blue-400'} p-4 rounded-lg flex justify-center cursor-pointer`}>{data.isLiked ? 'Unlike' : 'Like'}</div>
+      </div>
+  )
+}
+```
+
+2. bound mutate
+
+주로 로그아웃 같은 전역 변수를 수정할때 사용합니다.
+
+```js
+import { useSWRConfig } from "swr"
+ 
+function App() {
+  const { mutate } = useSWRConfig()
+  mutate(key, data, options)
+}
+```
+
