@@ -59,3 +59,10 @@ app.get('/', async (request, response) => {
 
 만약, MongoServerSelectionError ... Timeout error가 나온다면,
 몽고DB 사이트 왼쪽에 `Network Access`를 눌러서 해당 기기의 IP를 등록(재등록) 해주면 됩니다.
+
+참고로 prisma와 mongoDB를 연결할때,
+```:.env
+DATABASE_URL="mongodb+srv://<YOURID>:<YOURPASSWORD>@cluster0.v1pcsxx.mongodb.net/<YOURPROJECTNAME>?retryWrites=true&w=majority"
+
+// projectName은 mongodb atlas 왼쪽 위에 폴더 모양에서 확인 할 수 있습니다.
+```

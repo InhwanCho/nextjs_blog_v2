@@ -104,7 +104,7 @@ const {formState: { errors }} = useForm();
               !value.includes("@gmail.com") || "error message here",
           },
         })}/>
-{errors.email?.message}
+{errors.email?.message.toString()}
 ```
 
 ### pattern
@@ -125,5 +125,7 @@ const {
 
 <input {...register("email",{ #...errors#})} 
 className={`${errors.email ? 'bg-red-500' : ''} `} />
-{errors.email?.message}
+{errors.email?.message.toString()}
 ```
+
+- 참고로 register('name' ,{`valueAsNumber : true`})을 하면 자동으로 value가 number로 되기때문에 오류를 방지할 수 있습니다.
