@@ -119,13 +119,54 @@ const {
   register,
   handleSubmit,
   formState: { errors },
-} = useForm {
+} = useForm({
   mode: 'onBlur',
-}
+})
 
-<input {...register("email",{ #...errors#})} 
+<input {...register("email",{ #...errors#})}
 className={`${errors.email ? 'bg-red-500' : ''} `} />
 {errors.email?.message.toString()}
 ```
 
 - 참고로 register('name' ,{`valueAsNumber : true`})을 하면 자동으로 value가 number로 되기때문에 오류를 방지할 수 있습니다.
+
+### setError
+
+```ts:api/test.ts
+// 커스텀 메시지를 작성하고 setError를 설정하면 됩니다.
+function handler(req,res){
+  user = client.findUnique...
+  if (user) {
+        return res
+          .status(401)
+          .json({
+            ok: false,
+            errMsg: "이미 존재하는 이메일이 있습니다. 아이디 생성 실패",
+          });
+  }
+}
+```
+
+```js:useForm.tsx
+// 만약 로그인 실패 같은 커스텀 에러 메시지를 보여줄때는 setError를 사용하면 됩니다.
+
+const {
+  register,
+  handleSubmit,
+  setError,
+  formState: { errors },
+} = useForm()
+
+useEffect(()=>{
+  setError(
+    'email',
+    { type: "custom", message: data?.errMessage}
+    { shouldFocus: true }
+    )
+})
+
+  return(
+<input {...register("email")} />
+{errors.email?.message.toString()}
+)
+```
