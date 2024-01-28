@@ -58,8 +58,8 @@ console.log(watch());
 ### Validation 설정
 
 1. register를 설정할 때, 두번째 인자에 validation을 작성할 수 있습니다.
-2. handleSubmit은 onVaild와 onInvalid를 설정할 수 있습니다.(onVaild는 필수값이고 onInvalid는 선택값입니다.)
-3. input의 rule이 문제가 없으면 onVaild가 실행되고, 문제가 있으면 onInvalid를 실행해줍니다.
+2. handleSubmit은 onValid와 onInvalid를 설정할 수 있습니다.(onValid는 필수값이고 onInvalid는 선택값입니다.)
+3. input의 rule이 문제가 없으면 onValid가 실행되고, 문제가 있으면 onInvalid를 실행해줍니다.
 4. onInvalid를 설정할 때는 validation할 인자를 입력하고 message와 value를 설정하면 됩니다.
 5. customValidation을 설정할 때는 validate를 인자로 입력하고 에러 이름, 설정을 입력하면 됩니다.
 
@@ -168,5 +168,25 @@ useEffect(()=>{
   return(
 <input {...register("email")} />
 {errors.email?.message.toString()}
+)
+```
+
+### getValues
+
+```js:useForm.tsx
+const {
+  getValues,
+  watch,
+} = useForm()
+
+const onValid=()=>{
+  //만약 value 값을 얻으려면 getValues
+  getValues('comment')
+}
+
+//input 값의 변동에 따른 효과를 주려면 watch를 사용하면됩니다.
+  return(
+<input {...register("comment")} />
+{watch('comment') && (<p>게시</p>)}
 )
 ```
