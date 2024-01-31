@@ -190,3 +190,19 @@ const onValid=()=>{
 {watch('comment') && (<p>게시</p>)}
 )
 ```
+
+### setValue
+
+```js:useForm.tsx
+// defaultValues로 기본값을 설정해주는 방법도 있지만, 
+// 데이터가 undefined 였다가 불러와 지는 경우 value값에 보이지 않는 경우가 있는데,
+// setValue를 통해 value값을 지정해줄 수 있습니다.
+const { setValue } = useForm({defaultValues:{ avatar: user?.avatar || "dog" }})
+
+  useEffect(() => {
+    if (user?.name) setValue('name', user.name)
+    if (user?.password) setValue('password', user.password)
+  }, [setValue, user])
+
+...
+```
