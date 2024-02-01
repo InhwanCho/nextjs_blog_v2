@@ -80,3 +80,25 @@ HTML 요소들을 React 컴포넌트로 변환 및 이벤트리스너 등을 부
 `use client`가 적힌 컴포넌트를 CSR이라 하는데 이 CSR만 Hydration 작업을 수행하게됩니다.
 즉 `use client`가 적힌 컴포넌트는 interactive 하다는 의미이지, client에서 rendering 된다는 의미가 아닙니다.
 backend에서 rendering되고 frontend에서 Hydrate됩니다.
+
+## metadata
+
+Compoent가 아닌 page나 layout에서 `export const metadata`를 하면
+metadata를 생성할 수 있으며 중복되면 merge되며 나타납니다.
+
+```JavaScript
+export const metadata = {
+  title: "this is title",
+  description: "this is description"
+}
+
+//또한, template을 활용하여 사용 가능합니다.
+import { Metadata } from "next";
+export const metadata : Metadata= {
+  title: {
+    template: "%s | Title",
+    default : "Title",
+  },
+  description: "This is description"
+}
+```
