@@ -19,7 +19,8 @@ Middleware에서는 `Request`와 `Response`에 접근하여
 
 ## 사용 방법
 
-- 파일 `/app/middleware.ts(js)`을 생성합니다.
+- 파일 `pages`경로 밖에 `/app/middleware.ts(js)`을 생성합니다.
+- 최신버전에서는 `_middleware.ts`로 사용하면 실행되지 않습니다.
 - `config의 matcher`를 커스텀하여 원하는 경로에 미들웨어를 적용합니다.
 
 ```typeScript

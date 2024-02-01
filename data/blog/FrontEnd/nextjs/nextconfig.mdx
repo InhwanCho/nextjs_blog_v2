@@ -40,3 +40,22 @@ const nextConfig = {
 
 `redirects()`는 단순히 주소를 redirect해주고,
 `rewrites()`는 주소는 source 그대로이지만 실제로는 destination을 실행합니다.
+
+## 외부의 이미지를 추가할때
+
+허용된 주소를 아래와 같이 추가해줘야됩니다.
+
+```config:next.config.mjs
+const nextConfig = {
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "imagedelivery.net",
+        pathname: "**",
+      },
+    ],
+  },
+};
+```
