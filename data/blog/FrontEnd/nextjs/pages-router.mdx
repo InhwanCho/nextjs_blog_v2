@@ -9,7 +9,7 @@ date: 2024-01-05
 
 ## 설치
 
-일단 프로젝트 설치 시 App Router를 `No`를 선택해줘야 합니다.
+일단 프로젝트 설치 시 App Router를 `No`를 선택해줘야 합니다. -> pages router
 
 ```bash
 npx create-next-app@latest project-name
@@ -27,7 +27,7 @@ nextjs 12 버전 이하에서는 App Router가 아닌 Pages Router를 사용했�
 
 그렇기 때문에 사용방법이 App Router와 많이 다릅니다.
 
-일단 layout.tsx대신 _app.tsx를 사용합니다.
+일단 layout.tsx대신 \_app.tsx를 사용합니다.
 
 아래의 구조가 기본값이며 여기에 layout을 채워주면 됩니다.
 
@@ -39,24 +39,41 @@ export default function MyApp({ Component, pageProps }) {
 }
 ```
 
-## getStaticProps
+## getServerSideProps
+
+기본적으로 page에서 db에서 불러오는 데이터들은 client의 html에서는 비어있습니다.
+이때, getServerSideProps을 사용하면, server에서 html을 load를 할 수 있습니다.
+데이터가 적을때 사용하면 좋으며, loading이 없이 한 번에 페이지를 불러옵니다.
+단, 데이터가 크거나 많다면 페이지에 아무것도 보이지 않을 수 있고, 서버에 부담이 될 수있습니다.
 
 ```js:pages/index.tsx
-export default function Page() {
-  return (
-    <div>
-      <h1>  title   </h1>
-      <div> content </div>
-    </div>
-  )
+export default function Page({items}) {
+  return <div>{items}</div>
+}
+
+export async function getServerSideProps(ctx) {
+  console.log("SSR")
+  console.log(ctx)
+  const items =await client.items.findMany({});
+  return {
+    props: {
+      items: items,
+},
+}
 }
 ```
 
+## getStaticProps
+
+위에서도 언급한것 처럼
 기본적으로 만들어진 페이지는 요소검사를 해보면 내부의 content가 비어있습니다.
 CSR이기 때문에 SEO에서 아무런 이점이 없습니다.
 
 getStaticProps를 사용하면 'use server'와 동일한 효과를 볼 수 있습니다.
 즉, getStaticProps는 server에서 미리 랜더링을 하게됩니다.
+
+단, 이렇게 정적(Static)하게 생성된 html 파일은 build시 1회만 생성되며 수정하려면 다시 build해야됩니다.
+그렇기 때문에 추가 옵션(ODR 등)을 통해 요청에 따라 html을 생성하는 편입니다.
 
 ```js:pages/index.tsx
 export default function Page({data}) {
