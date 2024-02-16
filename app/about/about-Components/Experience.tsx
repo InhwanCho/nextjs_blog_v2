@@ -12,7 +12,7 @@ export default function Experience() {
   return (
     <section id="experience" ref={ref} className="mb-28 scroll-mt-28 sm:mb-40">
       <SectionHeading>My Experience</SectionHeading>
-      <VerticalTimeline lineColor="#e5e7e5">
+      <VerticalTimeline lineColor="#e5e7e5" layout="1-column">
         {experiencesData.map((item, i) => (
           <React.Fragment key={i}>
             <VerticalTimelineElement
@@ -20,7 +20,7 @@ export default function Experience() {
               contentStyle={{
                 background: theme === 'light' ? 'rgba(255,255,255,0.05)' : '#f3f4f6',
                 boxShadow: 'none',
-                border: '1px solid rgba(0, 0, 0, 0.05)',
+                border: '0.7px solid rgba(0, 0, 0, 0.4)',
                 textAlign: 'left',
                 padding: '1.3rem 2rem',
               }}
@@ -30,18 +30,32 @@ export default function Experience() {
                     ? '0.4rem solid #9ca3af'
                     : '0.4rem solid rgba(255, 255, 255, 0.5)',
               }}
-              date={item.date}
               icon={item.icon}
               iconStyle={{
-                background: theme === 'light' ? 'rgba(255, 255, 255, 0.15)' : '#f3f4f6',
+                background: theme === 'light' ? 'rgba(255, 255, 255, 0.15)' : '#d9dae3',
                 fontSize: '1.5rem',
+                color: theme === 'light' ? 'rgba(231, 224, 224, 0.15)' : '#2e2e30',
+                border: '0.7px solid rgba(0, 0, 0, 0.4)',
               }}
             >
-              <h3 className="mb-2 font-semibold capitalize">{item.title}</h3>
+              <h2
+                className={`mb-2 font-semibold capitalize ${
+                  theme === 'light' ? 'text-white/75' : 'text-gray-700'
+                }`}
+              >
+                {item.title}
+              </h2>
+              <h4
+                className={`mb-2 capitalize ${
+                  theme === 'light' ? 'text-white/75' : 'text-gray-700'
+                }`}
+              >
+                {item.date}
+              </h4>
               {/* <p className="!mt-0 font-normal">{item.location}</p> */}
               <p
                 className={`!mt-1 !font-normal ${
-                  theme === 'light' ? 'text-gray-700' : 'text-white/75'
+                  theme === 'light' ? 'text-white/75' : 'text-gray-700'
                 }`}
               >
                 {item.description}
