@@ -27,11 +27,11 @@ const ScrollTopAndComment = () => {
     <div
       className={`fixed bottom-8 right-8 hidden flex-col gap-3 ${show ? 'md:flex' : 'md:hidden'}`}
     >
-      {themeChange && (
-        <div className="rounded-full bg-gray-200 p-2 text-gray-500 transition-all hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600">
+      {/* {themeChange && (
+        <div className="rounded-full bg-gray-200 px-2 py-1 text-gray-500 transition-all hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600">
           <ThemeSwitch />
         </div>
-      )}
+      )} */}
       {themeChange && siteMetadata.comments?.provider && (
         <button
           aria-label="Scroll To Comment"
