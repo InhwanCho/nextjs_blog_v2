@@ -142,3 +142,27 @@
 .token.table {
   display: inline;
 }
+
+/* 스타일 변경 */
+.prose ul {
+  --tw-prose-bullets: black; /* 검정색으로 변경 */
+}
+.prose blockquote{
+  @apply bg-slate-200/80 py-1
+}
+.dark .prose blockquote{
+  @apply bg-slate-700/70 py-1
+}
+.dark .prose ul {
+  --tw-prose-bullets: #e4e4e7;
+}
+
+.dark .prose code {
+  @apply text-indigo-300  
+}
+.dark .prose pre {
+  @apply bg-slate-700
+}
+.code-line{
+  @apply py-[1px]
+}
