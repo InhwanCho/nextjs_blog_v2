@@ -1,9 +1,9 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Digital Blog',
+  title: "Inhwan's Digital Blog",
   author: 'InhwanCho',
   headerTitle: 'Digital Blog',
-  description: '기술 블로그입니다.',
+  description: '기록하며 공부하는 기술 블로그입니다.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://digital_space_blog.com',
