@@ -161,7 +161,7 @@
   @apply text-indigo-300  
 }
 .dark .prose pre {
-  @apply bg-slate-700
+  @apply bg-slate-800
 }
 .code-line{
   @apply py-[1px]
