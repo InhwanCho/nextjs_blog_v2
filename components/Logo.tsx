@@ -1,12 +1,21 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="30.000000pt" height="30.000000pt" viewBox="0 0 1336.000000 1338.000000"
- preserveAspectRatio="xMidYMid meet">
-<g transform="translate(0.000000,1338.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
-<path d="M7425 12579 c-118 -11 -250 -45 -400 -103 -285 -109 -586 -343 -727
+import React from 'react'
+
+const CustomLogo = ({ fill = '#000000' }) => (
+  <svg
+    version="1.0"
+    xmlns="http://www.w3.org/2000/svg"
+    width="30pt"
+    height="30pt"
+    viewBox="0 0 1336.000000 1338.000000"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <g
+      transform="translate(0.000000,1338.000000) scale(0.100000,-0.100000)"
+      fill={fill}
+      stroke="none"
+    >
+      <path
+        d="M7425 12579 c-118 -11 -250 -45 -400 -103 -285 -109 -586 -343 -727
 -566 -165 -261 -248 -532 -248 -815 0 -113 12 -214 41 -347 12 -55 12 -57 -16
 -100 -15 -23 -54 -74 -86 -113 -159 -195 -396 -600 -575 -982 -150 -322 -198
 -459 -228 -645 -20 -125 -20 -328 0 -442 27 -158 106 -341 206 -481 84 -116
@@ -44,6 +53,10 @@ fill="#000000" stroke="none">
 102 160 307 238 541 23 69 6 122 -51 163 -33 23 -35 23 -423 29 -361 5 -396 7
 -473 28 -149 39 -263 87 -346 143 -73 49 -76 59 -38 112 38 52 88 160 108 231
 25 86 29 268 10 384 -23 138 -46 203 -121 356 -191 386 -528 644 -979 750
--175 41 -336 51 -521 34z"/>
-</g>
-</svg>
+-175 41 -336 51 -521 34z"
+      />
+    </g>
+  </svg>
+)
+
+export default CustomLogo

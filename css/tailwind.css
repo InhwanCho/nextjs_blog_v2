@@ -35,7 +35,7 @@ input:-webkit-autofill:focus {
 }
 /* html line 설정 */
 html {
-  --line-color: #e5e7eb;
+  --line-color: #333333;
 }
 
 html.dark {
