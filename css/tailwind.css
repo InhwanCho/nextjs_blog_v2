@@ -33,12 +33,12 @@ input:-webkit-autofill:focus {
 .katex-display {
   overflow: auto hidden;
 }
-/* html line 설정 */
+/* html line 설정
 html {
   --line-color: #333333;
 }
 
 html.dark {
   --line-color: rgba(255, 255, 255, 0.15);
-}
+} */
 
