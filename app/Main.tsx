@@ -11,8 +11,8 @@ export default function Home({ posts }) {
     <>
       <div className="divide-y-2 divide-gray-600/70 dark:divide-gray-200">
         <div className="space-y-2 pb-6 pt-6 md:space-y-3">
-          <h1 className="text-2xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:text-4xl md:leading-14">
-            최신 포스트
+          <h1 className="text-2xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl sm:leading-10 md:leading-14">
+            새로운 포스트
           </h1>
           <p className="text-lg leading-7 text-gray-600 dark:text-gray-300">
             {siteMetadata.description}
