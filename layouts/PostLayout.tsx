@@ -56,7 +56,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             </div>
           </header>
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-400 pb-8 dark:divide-gray-700 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0">
-            <dl className="pb-10 pt-6 xl:border-b xl:border-gray-400 xl:pt-11 xl:dark:border-gray-700">
+            <dl className="pb-10 pt-6 xl:border-b xl:border-gray-600 xl:pt-11 xl:dark:border-gray-700">
               <dt className="sr-only">Authors</dt>
               <dd>
                 <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-x-0 xl:space-y-8">
@@ -73,7 +73,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       )}
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
                         <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-500">{author.name}</dd>
+                        <dd className="text-gray-900 dark:text-gray-300">{author.name}</dd>
                         <dt className="sr-only">Twitter</dt>
                         <dd>
                           {author.twitter && (
@@ -137,7 +137,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     )}
                     {next && next.path && (
                       <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        <h2 className="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400">
                           Next Article
                         </h2>
                         <div className="text-primary-600 hover:text-primary-700 dark:hover:text-primary-400">
