@@ -177,3 +177,6 @@ div {
   --tw-prose-th-borders: #c0c0c4;
   --tw-prose-td-borders: #c0c0c4;
 }
+th {
+  white-space: nowrap;
+}
