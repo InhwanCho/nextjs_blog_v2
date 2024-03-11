@@ -40,6 +40,9 @@ export const metadata: Metadata = {
       'application/rss+xml': `${siteMetadata.siteUrl}/feed.xml`,
     },
   },
+  verification: {
+    google: 'nyC3lHXmyNFN_1SnXGGwy8rqHk2qvwoUQOUTQQAIY-8',
+  },
   robots: {
     index: true,
     follow: true,
