@@ -1,5 +1,5 @@
 ---
-title:  'Nextjs - route'
+title:  'Nextjs - route handler'
 
 tags:
   - nextjs
@@ -9,17 +9,11 @@ date: 2023-11-24
  
 ---
 
-## Route
-
-Next.js에서 페이지 라우팅을 설정하고 사용하는 것은 매우 간단합니다. 
-Next.js는 파일 시스템 기반 라우팅을 사용하여 프로젝트의 `pages` 디렉토리에 있는 파일을 기준으로 자동으로 라우트를 생성합니다. 
-
-### 새로운 페이지 생성하기
+## 새로운 페이지 생성하기
 
 `app/about/page.tsx` 파일을 생성하면, `/about` URL에 접근할 때 해당 파일을 렌더링하여 보여줍니다.
 
-```javascript
-// app/about/page.tsx
+```javascript:app/about/page.tsx
 function AboutPage() {
   return <div>어바웃 페이지입니다.</div>;
 }
@@ -29,14 +23,12 @@ export default AboutPage;
 
 ## 기본 API 라우트 설정
 
-1. `app/api` 폴더를 생성합니다.
-2. `app/api` 폴더 내에 `route.ts` 파일을 추가합니다
+1. `app/api` 폴더를 생성합니다. - 꼭 폴더 이름이 `api`일 필요는 없지만 일반적으로 `api`를 사용.
+2. `app/api` 폴더 내에 `route.ts` 파일을 추가합니다 - 꼭 `route.ts`로 생성해야 합니다.
 
 예를 들어, `app/api/route.ts` 파일을 생성하면, `/api` 경로로 요청이 들어올 때 해당 파일의 코드가 실행됩니다.
 
-```javascript
-// app/api/route.ts
-
+```javascript:app/api/route.ts
 export default function handler(request, response) {
   response.status(200).json({ message: '안녕하세요!' });
 }
@@ -46,10 +38,11 @@ export default function handler(request, response) {
 - 꼭 `api`폴더에 생성해야합니다.
 - 그러면 해당 주소로 페이지가 생성되며 HTTP 방법에 따라(GET, POST, ...) function을 생성합니다.
 
-- Request, Response외에 추가로 `NextRequest와 NextResponse`를 사용할 수 있습니다.
+- `NextRequest`와 `NextResponse`를 사용해주세요. 
+- extends Request, response되었기 때문에 기존의 기능은 유지한 채 cookie 외의 추가 정보가 더 있습니다.
 - (middleware에서 사용하기 위해서는 NextRequest, NextResponse를 사용해야합니다.)
 
-```javascript
+```javascript:app/api/route.ts
 // 해당 페이지로 GET 요청이 오면 data를 리턴해줍니다.
 export async function GET(request, response) {
   const res = await fetch('https://data.mongodb-api.com/...', {
@@ -62,7 +55,6 @@ export async function GET(request, response) {
  
   return Response.json({ data })
 }
-
 
 // 해당 페이지로 JSON데이터가 POST 요청이 오면 data를 리턴합니다.
 export async function POST(request, response) {
@@ -82,8 +74,7 @@ export async function POST(request, response) {
 여기서 params.slug의 값에 `1`, `2`등의 값이 들어오게 됩니다.
 단, 여기서 폴더 이름을 [slug]로 만들었으면 파일 내의 변수명도 반드시 slug로 설정해줘야 합니다.
 
-```jsx
-// app/api/users/[slug]/route.ts
+```jsx:app/api/users/[slug]/route.ts
 import { NextRequest } from "next/server";
 
 // 다이나믹 라우팅 예시
@@ -103,9 +94,7 @@ export async function GET(
 아래와 같은 방법으로도 가능합니다.
 Next.js의 API 라우트에서는 `req.method`를 사용하여 HTTP 메소드(GET, POST 등)에 따라 다른 작업을 수행할 수 있습니다.
 
-```javascript
-// app/api/message.js
-
+```javascript:app/api/message.js
 export default function handler(req, res) {
   const { method } = req;
 
@@ -123,9 +112,3 @@ export default function handler(req, res) {
   }
 }
 ```
-
-
-## API test를 위한 툴(Post Man)
-
-API test를 위한 툴으로 가장 많이 사용하는게 `Post Man`입니다. 회원가입 시 무료로 사용 가능합니다.
-저의 경우는 Post Man을 사용하였지만, 다른 API test tool을 사용하여 테스트해도 무방합니다.
