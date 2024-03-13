@@ -3,7 +3,7 @@ title: '프론트엔드 설정 파일(Configuration Files) 세팅'
 
 tags:
   - configuration
-  - must-know
+    
 summary: '프론트엔드 개발 시 설정 파일들 - nex.config.js, tsconfig.json, eslintrc.json, package.json를 자세히 살펴보겠습니다.'
 date: 2024-03-12
 ---
@@ -14,7 +14,7 @@ next.config.js 파일은 Next.js 애플리케이션의 구성을 담당하는 �
 
 이 파일을 통해 Next.js의 다양한 설정을 커스터마이즈할 수 있으며, 여러 가지 확장 기능을 사용할 수 있습니다.
 
-### 구성 옵션 설정
+### 주요 옵션들
 
 ```javascript:next.config.js
 // 여기에 구성 옵션을 추가합니다.
@@ -27,13 +27,7 @@ module.exports = {
   images: {
     domains: ['example.com', 'anotherdomain.com'],
   },  
-};
-```
-
-### 커스텀 Webpack 설정
-
-```javascript:next.config.js
-module.exports = {
+  // custom webpack 설정
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // 추가적인 플러그인 설정
     config.plugins.push(new webpack.IgnorePlugin(/\/__tests__\//));
@@ -41,6 +35,8 @@ module.exports = {
     // 변경된 Webpack 설정 반환
     return config;
   },
+  // redirects 및 rewrite 설정
+  // 
 };
 ```
 
@@ -89,7 +85,7 @@ module.exports = {
 }
 ```
 
-### 주요 CompilerOptions 설정
+### 주요 옵션들
 
 |옵션명|	설명	|예시 값|
 | --- | --- | ---|
