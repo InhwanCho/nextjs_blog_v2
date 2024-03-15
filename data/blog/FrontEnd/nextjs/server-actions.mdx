@@ -1,0 +1,131 @@
+---
+title: 'Nextjs - server actions'
+tags:
+  - nextjs
+  - server-action
+summary: 'Nextjs에서 새로 도입된 server actions에 대해서 알아보겠습니다.'
+draft: true
+date: 2024-03-13
+---
+
+## Server Actions
+
+Next.js에서 새로 도입된 `server actions`은 `API 라우트의 대안`으로 제공됩니다.
+
+Server Actions을 사용하면, 페이지나 컴포넌트 내부에서 직접 서버 측 코드를 작성할 수 있어, 데이터를 가져오거나 데이터베이스와의 상호작용 같은 서버 측 작업을 보다 쉽게 처리할 수 있습니다.
+
+이는 개발자가 프론트엔드와 백엔드 로직을 하나의 파일 내에서 관리할 수 있게 하여, 파일 구조를 단순화하고 개발 프로세스를 개선합니다.
+
+## 주요 특징
+
+- 로컬 개발 환경의 개선: 개발자는 별도의 API 경로를 설정하지 않고도, 페이지 또는 컴포넌트 내에서 직접 데이터베이스 쿼리를 실행할 수 있습니다.
+
+- 백엔드 코드의 재사용성 향상: 컴포넌트나 페이지 간에 쉽게 백엔드 로직을 공유하고 재사용할 수 있습니다.
+
+- 페이지 데이터 요구 사항의 명시적 선언: Server Actions을 통해 페이지가 필요로 하는 데이터와 그 데이터를 가져오는 방법을 명시적으로 선언할 수 있습니다.
+
+- React 18 버전에서 새로 생긴 `useFormStatus`와 `useFormState`와 연계하여 다양한 기능 활용.
+
+## React의 18버전에서 새로 생긴 form 관련 hooks
+
+form 태그의 action에 콜백 함수를 생성하여 넣으면, props로 formData = input태그의 name값들을 받을 수 있습니다.
+
+```javascript
+export default function Search() {
+  function search(formData) {
+    // 'use server'를 입력하지 않으면 클라이언트에서 실행.
+    'use server'
+    const query = formData.get('custom_name')
+    alert(`You searched for '${query}'`)
+  }
+  return (
+    <form action={search}>
+      <input name="custom_name" />
+      <button type="submit">Search</button>
+    </form>
+  )
+}
+```
+
+### useOptimistic
+
+- `useOptimistic` 훅은 UI를 낙관적으로 업데이트하여 애플리케이션의 반응성을 향상시킵니다.
+- 사용자가 폼 제출 시, 서버 응답을 기다리는 대신 예상되는 결과로 UI가 즉시 업데이트됩니다.
+- "전송 중..." 상태의 메시지가 사용자에게 바로 보여지며, 이후 서버로부터 성공적인 응답을 받으면 해당 상태가 업데이트됩니다.
+
+```javascript
+'use client'
+ 
+import { useOptimistic } from 'react'
+import { send } from './actions'
+ 
+export function Thread({ messages }) {
+  const [optimisticMessages, addOptimisticMessage] = useOptimistic(
+    messages,
+    (state, newMessage) => [...state, { message: newMessage }]
+  )
+ 
+  return (
+    <div>
+      {optimisticMessages.map((m) => (
+        <div>{m.message}</div>
+      ))}
+      <form
+        action={async (formData) => {
+          const message = formData.get('message')
+          addOptimisticMessage(message)
+          await send(message)
+        }}
+      >
+        <input type="text" name="message" />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  )
+}
+```
+---
+
+## useFormState
+
+nextjs에서 `useFormState`를 사용하기 위해서는 `actions` 함수를 따로 빼야합니다.
+
+`useFormState`는 React의 hook 중 하나 이기때문에 `클라이언트 컴포넌트`에서 작동하기 때문입니다.
+
+사용 방법은 `useState`와 유사합니다.
+
+- 매개변수 첫 번째 인자로 `actions 함수`를 넣고, 두 번째 인자로 `초기값-보통 null`을 넣습니다.
+
+- return[] 값의 첫 번째 인자로는 state(actions 함수의 return 값),두 번째 인자로는 action(dispatch) 입니다.
+
+
+
+## server actions 사용 예시
+
+```javascript:app/page.tsx
+import { useFormStatus } from "react-dom";
+
+const Page = () => {
+  // pending은 'use client'이기때문에 submit button은 보통 Component로 만들어서 빼줍니다.
+  const { pending } = useFormStatus();
+
+  // 먼저 async funcion을 생성합니다.
+  async function hadleForm(formData:FormData) {
+    'use server'
+    console.log(formData.get('name'),formData.get('password'))
+    console.log('This is run in server !')
+  }
+  // form 태그에 action={서버액션} 을 넣어줍니다.
+  // name tag를 꼭 넣어줍니다.
+  return (
+    <form action={hadleForm} className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
+        <input name="name" type="text" placeholder="user name" required/>
+        <input name="password" type="password" placeholder="********" required/>
+        <button type="submit" disabled={pending}>{pending ? "로딩 중..." : "생성하기"}</button>
+      </div>
+    </form>
+  )
+}
+export default Page;
+```

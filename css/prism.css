@@ -11,7 +11,7 @@
 }
 
 .remark-code-title + div > pre {
-  @apply mt-0 rounded-t-none;
+  @apply mt-0 rounded-t-none pl-2.5;
 }
 
 /* Code block styles */
@@ -20,11 +20,11 @@
 }
 
 .code-line {
-  @apply block border-l-4 border-transparent pl-4 pr-4;
+  @apply block border-transparent pl-4 pr-4 ;
 }
 
 .code-line.inserted {
-  @apply bg-green-500 bg-opacity-20;
+  @apply bg-green-500 bg-opacity-20 ;
 }
 
 .code-line.deleted {
@@ -53,30 +53,36 @@
 .token.cdata {
   color: rgb(99, 119, 119);
   font-style: italic;
+  
 }
 
 .token.punctuation {
   color: rgb(199, 146, 234);
+  
 }
 
 .namespace {
   color: rgb(178, 204, 214);
+  
 }
 
 .token.deleted {
   color: rgba(239, 83, 80, 0.56);
   font-style: italic;
+  
 }
 
 .token.symbol,
 .token.property {
   color: rgb(128, 203, 196);
+  
 }
 
 .token.tag,
 .token.operator,
 .token.keyword {
   color: rgb(127, 219, 202);
+  
 }
 
 .token.boolean {
@@ -92,18 +98,21 @@
 .token.builtin,
 .token.char {
   color: rgb(130, 170, 255);
+  
 }
 
 .token.selector,
 .token.doctype {
   color: rgb(199, 146, 234);
   font-style: italic;
+  
 }
 
 .token.attr-name,
 .token.inserted {
   color: rgb(173, 219, 103);
   font-style: italic;
+  
 }
 
 .token.string,
@@ -112,27 +121,32 @@
 .language-css .token.string,
 .style .token.string {
   color: rgb(173, 219, 103);
+  
 }
 
 .token.class-name,
 .token.atrule,
 .token.attr-value {
   color: rgb(255, 203, 139);
+  
 }
 
 .token.regex,
 .token.important,
 .token.variable {
   color: rgb(214, 222, 235);
+  
 }
 
 .token.important,
 .token.bold {
   font-weight: bold;
+  
 }
 
 .token.italic {
   font-style: italic;
+  
 }
 
 .token.table {
@@ -165,8 +179,15 @@
 .dark .prose pre {
   @apply bg-slate-800;
 }
+
 .code-line {
-  @apply py-[1px];
+  @apply py-[1px] bg-slate-800 border-l-0;
+}
+.prose code {
+  @apply bg-slate-300/70 p-0.5 rounded-[4px];
+}
+.dark .prose code {
+  @apply bg-slate-800/80;
 }
 /* 표 */
 div {
