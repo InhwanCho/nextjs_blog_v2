@@ -72,7 +72,7 @@ export async function GET(request, response) {
 // 해당 페이지로 JSON데이터가 POST 요청이 오면 data를 리턴합니다.
 export async function POST(request, response) {
   const data = await request.json()
-  //만약 json에서 'a','b' 데이터(key_value)만 필요하다면 아래와 같이 작성
+  //만약 json에서 'a', 'b' 데이터(key_value)만 필요하다면 아래와 같이 작성
   // const { a, b } = await request.json()
   return Response.json(data)
 }
