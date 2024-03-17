@@ -4,8 +4,8 @@ tags:
   - nextjs
   - server-action
 summary: 'Nextjs에서 새로 도입된 server actions에 대해서 알아보겠습니다.'
-draft: true
-date: 2024-03-13
+
+date: 2024-03-17
 ---
 
 ## Server Actions
@@ -18,7 +18,7 @@ Server Actions을 사용하면, 페이지나 컴포넌트 내부에서 직접 �
 
 ## 주요 특징
 
-- 로컬 개발 환경의 개선: 개발자는 별도의 API 경로를 설정하지 않고도, 페이지 또는 컴포넌트 내에서 직접 데이터베이스 쿼리를 실행할 수 있습니다.
+- 로컬 개발 환경의 개선: 별도의 API 경로를 설정하지 않고도, 페이지 또는 컴포넌트 내에서 직접 데이터베이스 쿼리를 실행할 수 있습니다.
 
 - 백엔드 코드의 재사용성 향상: 컴포넌트나 페이지 간에 쉽게 백엔드 로직을 공유하고 재사용할 수 있습니다.
 
@@ -26,7 +26,13 @@ Server Actions을 사용하면, 페이지나 컴포넌트 내부에서 직접 �
 
 - React 18 버전에서 새로 생긴 `useFormStatus`와 `useFormState`와 연계하여 다양한 기능 활용.
 
+- 단점은 `복잡성 증가`, 서버 측 코드라서 `디버깅이 어려움`, `서버의 부하 증가`가 있습니다.
+
+---
+
 ## React의 18 버전에서 새로 생긴 form 관련 hooks
+
+먼저 server action에 대해 설명하기 전에 새로 나온 리엑트 훅들에 대해 설명하겠습니다.
 
 form 태그의 action에 콜백 함수를 생성하여 넣으면, props로 formData = input태그의 name값들을 받을 수 있습니다.
 
@@ -47,43 +53,13 @@ export default function Search() {
 }
 ```
 
-### useOptimistic
+## useOptimistic
 
+- server action에서 mutation을 사용할때 사용합니다.
 - `useOptimistic` 훅은 UI를 낙관적으로 업데이트하여 애플리케이션의 반응성을 향상시킵니다.
 - 사용자가 폼 제출 시, 서버 응답을 기다리는 대신 예상되는 결과로 UI가 즉시 업데이트됩니다.
 - "전송 중..." 상태의 메시지가 사용자에게 바로 보여지며, 이후 서버로부터 성공적인 응답을 받으면 해당 상태가 업데이트됩니다.
 
-```javascript
-'use client'
- 
-import { useOptimistic } from 'react'
-import { send } from './actions'
- 
-export function Thread({ messages }) {
-  const [optimisticMessages, addOptimisticMessage] = useOptimistic(
-    messages,
-    (state, newMessage) => [...state, { message: newMessage }]
-  )
- 
-  return (
-    <div>
-      {optimisticMessages.map((m) => (
-        <div>{m.message}</div>
-      ))}
-      <form
-        action={async (formData) => {
-          const message = formData.get('message')
-          addOptimisticMessage(message)
-          await send(message)
-        }}
-      >
-        <input type="text" name="message" />
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  )
-}
-```
 ---
 
 ## useFormState
@@ -96,38 +72,77 @@ nextjs에서 `useFormState`를 사용하기 위해서는 `actions` 함수를 따
 
 - 매개변수 첫 번째 인자로 `actions 함수`를 넣고, 두 번째 인자로 `초기값-보통 null`을 넣습니다.
 
-- return[] 값의 첫 번째 인자로는 state(actions 함수의 return 값),두 번째 인자로는 action(dispatch) 입니다.
+- return[] 값의 첫 번째 인자로는 state(actions 함수의 return 값 = 결과 값),두 번째 인자로는 action(dispatch) 입니다.
 
+---
 
+## useTransition
+
+- `useTransition`은 UI를 차단하지 않고 상태를 업데이트 할 수 있는 리액트 훅입니다.
+- `useFormState`, `useFormStatus` 조합 중 하나를 선택해서 사용하면 됩니다.
+
+- `ispending`, `startTransition`을 반환받습니다.
+
+```javascript
+const [isPending, startTransition] = useTransition()
+// ...
+const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  setError('')
+  setSuccess('')
+
+  startTransition(() =>
+    loginAction(values).then((data:any) => {
+      setError(data.error)
+      setSuccess(data.success)
+    })
+  )
+}
+```
+
+---
 
 ## server actions 사용 예시
 
+1. 서버 액션 함수를 따로 컴포넌트로 만들어서 useFormState에 첫번째 인자로 넣고, 두번째 인자로 초기값(보통 null)을 넣습니다.
+
+```javascript:/app/login/actions.tsx
+"use server";
+
+export default async function HandleForm(prevState: any, formData: FormData) {  
+  console.log(prevState);
+  console.log(formData.get("name"), formData.get("password"));
+  console.log("I run in the server");
+  return { errors: ["this is just test message","test msg is short"] };
+}
+```
+
+2. 제출 버튼을 클라이언트 컴포넌트로 만들어줍니다.
+3. form에 `action`, input에 `name` 속성을 잘 지정해줍니다.
+
 ```javascript:app/page.tsx
 import { useFormStatus } from "react-dom";
-
+import action from '@/app/login/actions';
 const Page = () => {
-  // pending은 'use client'이기때문에 submit button은 보통 Component로 만들어서 빼줍니다.
-  const { pending } = useFormStatus();
+  
+  const [state, action] = useFormState(action,null)
 
-  // 먼저 async funcion을 생성합니다.
-  async function hadleForm(formData:FormData) {
-    'use server'
-    console.log(formData.get('name'),formData.get('password'))
-    console.log('This is run in server !')
-  }
-  // form 태그에 action={서버액션} 을 넣어줍니다.
-  // name tag를 꼭 넣어줍니다.
   return (
-    <form action={hadleForm} className="flex flex-col gap-3">
+    <form action={action} className="flex flex-col gap-3">
       <div className="flex flex-col gap-3">
         <input name="name" type="text" placeholder="user name" required/>
-        <input name="password" type="password" placeholder="********" required/>
-        <button type="submit" disabled={pending}>{pending ? "로딩 중..." : "생성하기"}</button>
+        <input name="password" type="password" placeholder="********" required autoComplete='none'/>
+
+        <FormButton />
+        {/* 아래처럼 생긴 버튼 client compoent 생성 
+        // <button type="submit" disabled={pending}>{pending ? "로딩 중..." : "생성하기"}</button>*/}
       </div>
     </form>
   )
 }
 export default Page;
+
+// console.log(state)
+// { errors: ["this is just test message","test msg is short"] }
 ```
 
 
