@@ -12,17 +12,17 @@ date: 2024-03-18
 
 ## Nextjs 14버전 app-router(앱라우터) 에서 카카오맵 API를 실행하는 방법입니다.
 
->먼저, 카카오맵 API를 신청해야됩니다.
+- 먼저, 카카오맵 API를 신청해야됩니다.
 
 실행 방법은 2가지가 있으며 1개를 선택하시면 됩니다.
 
-[1. \<Script>태그 이용하기, 2.useKakaoLoader 생성 및 활용하기]
+`<Script>`태그 이용하기 또흔 `useKakaoLoader` 생성
 
-개인적으로, app-router에서는 2.useKakaoLoader를 추천드립니다.
+개인적으로, app-router에서는 2.`useKakaoLoader`를 추천드립니다.
 
 1. script태그 이용하기
 
-- 스크립트 태그의 strategy='beforeInteractive'를 해줘야됩니다.
+- 스크립트 태그의 `strategy='beforeInteractive'`를 해줘야됩니다.
 
 ```javascript:app/map/layout.tsx
 import Script from 'next/script'
@@ -42,7 +42,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
 }
 ```
 
-2. useKakaoLoader() 컴포넌트 생성하기
+2. `useKakaoLoader` 컴포넌트 생성하기
 
 ```javascript:components/use-kakao-loader.tsx
 import { useKakaoLoader as useKakaoLoaderOrigin } from "react-kakao-maps-sdk"
@@ -96,10 +96,10 @@ export default function BasicMap() {
 
 ```javascript
 const url = `https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=127.1086228&y=37.4012191`
-const data = fetch(url,{  
+const data = fetch(url, {
   headers: {
     'Content-Type': 'application/json',
-    'Authorization' : 'KakaoAK '+ process.env.KAKAORESTKEY,
-  }
+    Authorization: 'KakaoAK ' + process.env.KAKAORESTKEY,
+  },
 }).then((res) => res.json())
 ```
