@@ -6,7 +6,7 @@ const siteMetadata = {
   description: '기록하며 공부하는 기술 블로그입니다.',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://digital_space_blog.com',
+  siteUrl: 'https://nextjs-blog-v2-amber.vercel.app',
   siteRepo: 'https://github.com/InhwanCho/nextjs_blog_v2',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/twitter-card.png',
