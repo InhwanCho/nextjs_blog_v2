@@ -10,9 +10,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
-import { GA } from 'pliny/analytics/GoogleAnalytics'
 import React from 'react'
-import { Analytics as GoogleAnalytics } from '@/components/Analytics'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -83,7 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="fixed inset-0 -z-10 bg-blue-100/30 backdrop-blur-lg dark:bg-gray-950 dark:text-white"></div>
 
         <ThemeProviders>
-          <GoogleAnalytics />
+          {/* <GoogleAnalytics /> */}
           {/* <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> */}
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
