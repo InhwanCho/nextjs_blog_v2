@@ -81,8 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="fixed inset-0 -z-10 bg-blue-100/30 backdrop-blur-lg dark:bg-gray-950 dark:text-white"></div>
 
         <ThemeProviders>
-          {/* <GoogleAnalytics /> */}
-          {/* <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> */}
+          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
