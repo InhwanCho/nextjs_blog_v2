@@ -127,7 +127,7 @@ export default function RootLayout({ children }) {
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
-const { data } = useQuery<Todo[]>({
+const { data } = useQuery({
   queryKey: ["stream-hydrate-users"],
   queryFn: () => fetch('https://jsonplaceholder.typicode.com/todos').then((res) => res.json())
 });
@@ -137,7 +137,8 @@ return // ...
   fallback={
     <p>loading...</p>
   }>
-  <DataComponent/>
+  {/*  {data.title} ... */}
+  <DataComponent/>   
 </Suspense>
 }
 ```
