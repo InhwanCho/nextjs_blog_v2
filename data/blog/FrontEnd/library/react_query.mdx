@@ -127,21 +127,26 @@ export default function RootLayout({ children }) {
 import { useQuery } from "@tanstack/react-query";
 
 export default function Page() {
-const { data } = useQuery({
+
+// 
+const { data, isLoading } = useQuery({
   queryKey: ["stream-hydrate-users"],
   queryFn: () => fetch('https://jsonplaceholder.typicode.com/todos').then((res) => res.json())
 });
+const { data as SuspenseData } = useSuspenseQuery({'동일 값'})
 
 return // ...
+    { isLoading ? '...' : data.title }
 <Suspense
   fallback={
     <p>loading...</p>
   }>
-  {/*  {data.title} ... */}
-  <DataComponent/>   
+  <DataComponent/>   //SuspenseData
 </Suspense>
 }
 ```
+
+- 단, `Suspense`를 사용할땐, v4 이하에선 `useQuries`, v5부터는 `useSuspenseQuery`를 사용하면 병렬로 호출 할 수 있습니다.
 
 ---
 
