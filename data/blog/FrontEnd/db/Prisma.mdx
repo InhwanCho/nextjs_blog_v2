@@ -176,9 +176,10 @@ model User {
   name     String
   email    String   @unique
 
-@@index([name, email], name: "name_aaa_index")
+@@index(name: "name_aaa_index", [name, email])
 }
 // name과 email에 대해 index를 정의함. index 이름은 name_aaa_index
+// 파라미터 순서는 상관 없음.
 ```
 
 ### 참고
