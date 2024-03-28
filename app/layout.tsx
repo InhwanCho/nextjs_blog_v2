@@ -11,6 +11,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import React from 'react'
+import Script from 'next/script'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -81,7 +82,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="fixed inset-0 -z-10 bg-blue-100/30 backdrop-blur-lg dark:bg-gray-950 dark:text-white"></div>
 
         <ThemeProviders>
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=G-VTMQWG6ZYD"
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-VTMQWG6ZYD', {
+            page_path: window.location.pathname,
+          });
+        `}
+          </Script>
+          {/* <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> */}
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
