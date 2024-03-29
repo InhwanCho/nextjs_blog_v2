@@ -1,6 +1,7 @@
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { Space_Grotesk } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
@@ -12,6 +13,7 @@ import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import React from 'react'
 import Script from 'next/script'
+import { GA } from 'pliny/analytics/GoogleAnalytics'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -82,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="fixed inset-0 -z-10 bg-blue-100/30 backdrop-blur-lg dark:bg-gray-950 dark:text-white"></div>
 
         <ThemeProviders>
-          <Script
+          {/* <Script
             src="https://www.googletagmanager.com/gtag/js?id=G-VTMQWG6ZYD"
             strategy="afterInteractive"
           />
@@ -95,7 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             page_path: window.location.pathname,
           });
         `}
-          </Script>
+          </Script> */}
           {/* <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> */}
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
@@ -106,6 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </div>
           </SectionContainer>
+          <GoogleAnalytics gaId="G-VTMQWG6ZYD" />
         </ThemeProviders>
       </body>
     </html>
