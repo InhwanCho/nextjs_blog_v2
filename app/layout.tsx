@@ -1,9 +1,8 @@
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import { Analytics } from '@vercel/analytics/react'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 import { Space_Grotesk } from 'next/font/google'
-// import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
@@ -84,20 +83,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="fixed inset-0 -z-10 bg-blue-100/30 backdrop-blur-lg dark:bg-gray-950 dark:text-white"></div>
         <Analytics />
         <ThemeProviders>
-          {/* <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-VTMQWG6ZYD"
-            strategy="afterInteractive"
-          />
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-VTMQWG6ZYD', {
-            page_path: window.location.pathname,
-          });
-        `}
-          </Script> */}
           {/* <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> */}
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
@@ -108,8 +93,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Footer />
             </div>
           </SectionContainer>
-          <GoogleAnalytics gaId="G-VTMQWG6ZYD" />
         </ThemeProviders>
+        <GoogleAnalytics />
       </body>
     </html>
   )
