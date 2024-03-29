@@ -1,9 +1,9 @@
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
-
+import { Analytics } from '@vercel/analytics/react'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Space_Grotesk } from 'next/font/google'
-import { Analytics, AnalyticsConfig } from 'pliny/analytics'
+// import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
@@ -82,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <body className="relative bg-gray-50 text-gray-950 dark:bg-gray-950 dark:text-white">
         <div className="fixed inset-0 -z-10 bg-blue-100/30 backdrop-blur-lg dark:bg-gray-950 dark:text-white"></div>
-
+        <Analytics />
         <ThemeProviders>
           {/* <Script
             src="https://www.googletagmanager.com/gtag/js?id=G-VTMQWG6ZYD"
